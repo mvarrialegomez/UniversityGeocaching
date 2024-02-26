@@ -16,19 +16,17 @@ struct NavigationScreenView: View {
     
     @State var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 32.772364, longitude: -117.187653),
-        span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
+        span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
     )
     
     @State var showingUserLocation = false
-    
-    @State var cacheBubbleColor = Color.green.opacity(0.4)
     
     //for QR code scanner
     @State var isPresentingScanner = false
     @State var scannedCode: String = "Scan a QR code to get started."
     
     @State var isPresentingFinishPopUp = false
-
+    
     func showFinishPopUp() {
         self.isPresentingFinishPopUp = true
     }
@@ -52,26 +50,36 @@ struct NavigationScreenView: View {
             }
         )
     }
-
+    
     
     var caches = [
-        Cache(name: "USD Torero Store", coordinate: CLLocationCoordinate2D(latitude: 32.772364, longitude: -117.187653)),
-        Cache(name: "Student Life Pavilion", coordinate: CLLocationCoordinate2D(latitude: 32.77244, longitude: -117.18727)),
-        Cache(name: "Warrren Hall", coordinate: CLLocationCoordinate2D(latitude: 32.77154, longitude:  -117.18884)),
-        Cache(name: "Copley Library", coordinate: CLLocationCoordinate2D(latitude: 32.771443, longitude: -117.193472)),
+        Cache(id: UUID(), name: "USD Torero Store", coordinate: CLLocationCoordinate2D(latitude: 32.772364, longitude: -117.187653)),
+        Cache(id: UUID(), name: "Student Life Pavilion", coordinate: CLLocationCoordinate2D(latitude: 32.77244, longitude: -117.18727)),
+        Cache(id: UUID(), name: "Warren Hall", coordinate: CLLocationCoordinate2D(latitude: 32.77154, longitude:  -117.18884)),
+        Cache(id: UUID(), name: "Copley Library", coordinate: CLLocationCoordinate2D(latitude: 32.771443, longitude: -117.193472)),
     ]
     
     var body: some View {
         TabView {
             // Map tab
-            ZStack {
-                Map(coordinateRegion: $region, showsUserLocation: showingUserLocation, annotationItems: caches) { cache in
-                    MapAnnotation(coordinate: cache.coordinate) {
-                        Circle()
-                            .foregroundColor(cacheBubbleColor)
-                            .frame(width: 100, height: 100)
+            ZStack { //ZStack open
+                Map(coordinateRegion: $region, showsUserLocation: showingUserLocation, annotationItems: caches) {
+                    
+                    cache in MapAnnotation(coordinate: cache.coordinate) {
+                        
+                        Image("cachePin.fill")
+                            .foregroundColor(.blue)
+                            .foregroundStyle(.blue)
+                            .imageScale(.large)
+                        
+                            // Prints name of cache on console on tap
+                            .onTapGesture {
+                                print(cache.name)
+                            }
                     }
+                    
                 }
+                
                 VStack {
                     Spacer()
                     HStack {
@@ -94,77 +102,57 @@ struct NavigationScreenView: View {
                     }
                 }
             }
-            .onAppear {
-                            locationManager.requestLocation()
-                        }
-                        .onReceive(locationManager.$location) { location in
-                            if let location = location {
-                                region = MKCoordinateRegion(
-                                    center: location.coordinate,
-                                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-                                )
+                
+                .onAppear {
+                    locationManager.requestLocation()
                 }
-            }
-            .tabItem {
-                Image(systemName: "map")
-                Text("Map")
-            }
-
-            // Scanning feature
-            VStack{
-                QRScannerView(verificationString: "Your Verification String Here")
+                .onReceive(locationManager.$location) { location in
+                    if let location = location {
+                        region = MKCoordinateRegion(
+                            center: location.coordinate,
+                            span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                        )
+                    }
+                }
                 .tabItem {
-                    Image(systemName: "camera")
-                    Text("Scan Code")
+                    Image(systemName: "map")
+                    Text("Map")
                 }
+            } // ZStack close
+            
+            .sheet(isPresented: $isPresentingFinishPopUp) {
+                FinishPopUpView(isPresentingFinishPopUp: $isPresentingFinishPopUp)
             }
-            .tabItem {
-                Image(systemName: "camera")
-                Text("Scan Code")
+            .edgesIgnoringSafeArea(.all)
+            
+            
+        }
+        
+        class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+            private let locationManager = CLLocationManager()
+            @Published var location: CLLocation?
+            
+           
+            override init() {
+                super.init()
+                locationManager.delegate = self
+                locationManager.desiredAccuracy = kCLLocationAccuracyBest
             }
-
-                            .tabItem {
-                                Image(systemName: "camera")
-                                Text("Scan Code")
-                            }
-
-                            // List tab
-                            NearbyQuestView()
-                                .tabItem {
-                                    Image(systemName: "list.bullet")
-                                    Text("List")
-                                }
-                        }
-                        .sheet(isPresented: $isPresentingFinishPopUp) {
-                            FinishPopUpView(isPresentingFinishPopUp: $isPresentingFinishPopUp)
-                        }
-                        .edgesIgnoringSafeArea(.all)
-                    }
-                    
-                    class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
-                        private let locationManager = CLLocationManager()
-                        @Published var location: CLLocation?
-                        
-                        override init() {
-                            super.init()
-                            locationManager.delegate = self
-                            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-                        }
-                        
-                        func requestLocation() {
-                            locationManager.requestWhenInUseAuthorization()
-                            locationManager.requestLocation()
-                        }
-                        
-                        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-                            location = locations.last
-                        }
-                        
-                        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-                            print(error.localizedDescription)
-                        }
-                    }
-                }
+            
+            func requestLocation() {
+                locationManager.requestWhenInUseAuthorization()
+                locationManager.requestLocation()
+            }
+            
+            func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+                location = locations.last
+            }
+            
+            func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+                print(error.localizedDescription)
+            }
+        }
+    } //end of Navigation Screen View struct
                  
 struct FinishPopUpView: View {
     @Binding var isPresentingFinishPopUp: Bool
