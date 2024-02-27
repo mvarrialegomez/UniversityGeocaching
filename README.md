@@ -1,15 +1,15 @@
-CS Capstone Design 2023-2024 Team GeoCaching
+# CS Capstone Design 2023-2024: University Geocaching
 
-Team Members:
-Sean Limqueco
-David Amano
-Maria Varriale Gomez
-Natalie Nguyen
-Michael Gallagher
+### Team Members:
+- Sean Limqueco
+- David Amano
+- Maria Varriale Gomez
+- Natalie Nguyen 
+- Michael Gallagher
 
-Mentor:
-Dr. Wolfe
-Preston Drake
+### Mentors:
+- Dr. Wolfe
+- Preston Drake
 
-Customer:
-Rachel Shaelstrom
+### Customer:
+- Rachel Shaelstrom
