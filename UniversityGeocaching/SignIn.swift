@@ -17,8 +17,12 @@ struct SignIn: View {
     var body: some View {
         NavigationView{
             VStack(alignment: .leading, spacing: 15) {
-                Spacer()
-                
+                Image("University Geocaching 1")
+                    .resizable()
+                    .frame(width: 150, height: 150)
+                    .padding(.leading, 120)
+                    
+
                 TextField("Name",
                           text: $name ,
                           prompt: Text("Login").foregroundColor(.blue)
