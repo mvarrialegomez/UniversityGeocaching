@@ -12,8 +12,8 @@ import SwiftUI
 struct UniversityGeocachingApp: App {
     var body: some Scene {
         WindowGroup {
-            //SignIn()
-            ContentView()
+            SignIn()
+            //ContentView()
         }
     }
 }
