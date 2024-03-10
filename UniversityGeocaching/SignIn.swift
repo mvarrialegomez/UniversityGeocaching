@@ -17,6 +17,9 @@ struct SignIn: View {
     var body: some View {
         NavigationView{
             VStack(alignment: .leading, spacing: 15) {
+                
+                Image("SignInScreenImage")
+                
                 Spacer()
                 
                 TextField("Name",
@@ -61,9 +64,10 @@ struct SignIn: View {
                 
                 VStack{
                     HStack{
-                        NavigationLink(destination: ContentView()){
+                        NavigationLink(destination: ContentView().navigationBarBackButtonHidden()){
                             HStack{
                                 Image(systemName: "checkmark.circle")
+                                    .foregroundColor(.white)
                                 Text("Sign In")
                                     .font(.title2)
                                     .bold()
@@ -71,11 +75,10 @@ struct SignIn: View {
                             }
                             .frame(height: 50)
                             .frame(maxWidth: .infinity) // how to make a button fill all the space available horizontally
-                            .background(Color(red: 0x5D/255, green: 0x96/255, blue: 0x7B/255))
+                            .background(Color.blue)
                             .cornerRadius(20)
                             .padding()
                         }
-                        
                     }
                 }
             }
