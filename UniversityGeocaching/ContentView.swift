@@ -13,9 +13,9 @@ struct ContentView: View {
             VStack{
                 Spacer(minLength: 200)
                 ZStack(alignment: .leading) {
-                    Image("Home Page 1")
+                    Image("Home Page 3")
                         .resizable()
-                        .aspectRatio(UIImage(named: "Home Page 1")!.size, contentMode: .fill)
+                        .aspectRatio(UIImage(named: "Home Page 3")!.size, contentMode: .fill)
                         .padding(.bottom, 35)
                     
                     
