@@ -1,7 +1,8 @@
 //  PastQuestView.swift
 //  UniversityGeocaching
 //
-//  Created by Tia Merheb on 2/9/23.
+//  Created by Tia Merheb on 3/14/23.
+//  Continued by Maria Varriale Gomez, David Amano, Natalie Nguyen, Michael Gallagher, and Sean Limqueco in Spring 2024.
 //
 
 import SwiftUI

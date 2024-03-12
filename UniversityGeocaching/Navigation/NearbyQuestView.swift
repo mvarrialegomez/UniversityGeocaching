@@ -1,3 +1,9 @@
+//  NearbyQuestView.swift
+//  UniversityGeocaching
+//
+//  Created by Tia Merheb on 3/14/23.
+//  Continued by Maria Varriale Gomez, David Amano, Natalie Nguyen, Michael Gallagher, and Sean Limqueco in Spring 2024.
+//
 import SwiftUI
 import Combine
 import Foundation
@@ -6,7 +12,7 @@ import MapKit
 
 struct NearbyQuestView: View {
     @State private var nearbyQuests: [CreatedQuest] = []
-    @StateObject private var cancellables = Cancellables()
+    @StateObject private var cancellables = Cancellables() //subscriptions to publishers; prevents memory leaks and resource consumption
     @StateObject private var locationManager = LocationManager()
 
     var body: some View {
@@ -33,12 +39,15 @@ struct NearbyQuestView: View {
                     .listStyle(InsetGroupedListStyle())
                 }
                 .navigationBarHidden(true)
-                .onAppear(perform: loadData)
+                .onAppear(perform: loadData) //Load nearby quests when view appears
             }
         }
 
 
     func loadData() {
+        /**
+         * Prints out received requests sorted by distance
+        */
         fetchQuests()
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -57,6 +66,10 @@ struct NearbyQuestView: View {
     }
 
     func fetchQuests() -> AnyPublisher<[CreatedQuest], Error> {
+        /**
+         * Fetches quests from the specified web API
+         * @return A publisher with an array of `CreatedQuest` objects, or an error if the request fails.
+        */
         let url = URL(string: "http://universitygeocaching.azurewebsites.net/api/location")!
 
         var request = URLRequest(url: url)
@@ -65,6 +78,7 @@ struct NearbyQuestView: View {
         request.setValue("starterKey420", forHTTPHeaderField: "X-Auth")
 
         return URLSession.shared.dataTaskPublisher(for: request)
+        //Publishes a tuple that contains the fetched data and a URLResponse, if the task succeeds. An error, if the task fails.
             .tryMap { (data, response) -> Data in
                 if let httpResponse = response as? HTTPURLResponse {
                     print("Status code: \(httpResponse.statusCode)")
@@ -76,26 +90,35 @@ struct NearbyQuestView: View {
                 }
                 return data
             }
-            .decode(type: [CreatedQuest].self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
+            //handling asynchronous data processing
+            .decode(type: [CreatedQuest].self, decoder: JSONDecoder()) //transforms the JSON response data into an array of CreatedQuest objects
+            .receive(on: DispatchQueue.main) //ensures further operation are on the main thread
+            .eraseToAnyPublisher() //makes the type more generic
     }
 
     func sortQuestsByDistance(_ quests: [CreatedQuest]) -> [CreatedQuest] {
+        /**
+         * Sorts an array of `CreatedQuest` objects based on their distance from the user's current location.
+         * @parameters An array of 'CreatedQuest' objects to be sorted
+         * @return An array of sorted 'CreatedQuest' objects
+        */
+        //checks if user's current location is available
         guard let userLocation = locationManager.lastKnownLocation else {
-            return quests
+            return quests //if user location not available, return unsorted array
         }
 
+        // Create CLLocation objects for quests for comparison
         return quests.sorted { quest1, quest2 in
             let quest1Location = CLLocation(latitude: quest1.latitude, longitude: quest1.longitude)
             let quest2Location = CLLocation(latitude: quest2.latitude, longitude: quest2.longitude)
+            //compares distance of quest from user's location
             return userLocation.distance(from: quest1Location) < userLocation.distance(from: quest2Location)
         }
     }
 }
 
 class Cancellables: ObservableObject {
-    var storage = Set<AnyCancellable>()
+    var storage = Set<AnyCancellable>() //Subscriptions are cancelled when they are inactive or no longer necessary.
 }
 
 struct CreatedQuest: Identifiable, Codable {
@@ -109,7 +132,7 @@ struct CreatedQuest: Identifiable, Codable {
 
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var locationManager = CLLocationManager()
-    @Published var lastKnownLocation: CLLocation?
+    @Published var lastKnownLocation: CLLocation? // Published property to store the user's current location
 
     override init() {
         super.init()
@@ -121,7 +144,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            lastKnownLocation = location
+            lastKnownLocation = location //updates lastKnownLocation
         }
     }
 
@@ -133,15 +156,20 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
 
 
 struct QuestMapView: View {
+    /**
+     * Represents a view that displays a map with a pin indicating the location of a quest.
+     */
     var quest: CreatedQuest
     @State private var region: MKCoordinateRegion
     
     init(quest: CreatedQuest) {
         self.quest = quest
+        // Specific coordinate region set around the created quests location
         self._region = State(initialValue: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: quest.latitude, longitude: quest.longitude), span: MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002)))
     }
     
     var body: some View {
+        // Displays a map with a pin annotation indicating the location of the quest.
         Map(coordinateRegion: $region, annotationItems: [quest]) { quest in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: quest.latitude, longitude: quest.longitude)) {
                 Image(systemName: "mappin.circle")

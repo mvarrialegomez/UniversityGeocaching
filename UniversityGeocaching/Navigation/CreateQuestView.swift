@@ -2,6 +2,7 @@
 //  UniversityGeocaching
 //
 //  Created by Tia Merheb on 3/14/23.
+//  Continued by Maria Varriale Gomez, David Amano, Natalie Nguyen, Michael Gallagher, and Sean Limqueco in Spring 2024.
 //
 
 import SwiftUI
@@ -17,12 +18,13 @@ struct CreateQuestView: View {
     private var cacheCoordinates: String = "0.0, 0.0"
 
     func validate(cacheName: String) -> Bool {
-        return true
+        return true //accepts any value at the moment
     }
 
     func getCurrentCoordinates() -> String {
-        manager.requestLocation()
-        return "0.0,0.0"
+        manager.requestLocation()//uses the users current location
+        //add in a function where they can input coordinates of their choosing
+        return "0.0,0.0" //automatically returns these coordinates
     }
 
     var body: some View {

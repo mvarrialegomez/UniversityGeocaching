@@ -1,4 +1,9 @@
-// Modified by Maria Varriale Gomez on 2/25/24.
+//  NavigationScreenView.swift
+//  UniversityGeocaching
+//
+//  Created by Tia Merheb on 3/14/23.
+//  Continued by Maria Varriale Gomez, David Amano, Natalie Nguyen, Michael Gallagher, and Sean Limqueco in Spring 2024.
+//
 
 
 import Foundation
