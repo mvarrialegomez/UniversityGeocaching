@@ -16,7 +16,7 @@ struct ContentView: View {
                     Image("Home Page 3")
                         .resizable()
                         .aspectRatio(UIImage(named: "Home Page 3")!.size, contentMode: .fill)
-                        .padding(.bottom, 35)
+                        .padding(.bottom, 13)
                     
                     
                     /**
@@ -60,6 +60,7 @@ struct ContentView: View {
                                 .overlay(RoundedRectangle(cornerRadius: 15)
                                     .stroke(Color(red: 51/255, green: 98/255, blue: 164/255), lineWidth: 1))
                             }
+                            .padding(.horizontal,10)
                             
                             NavigationLink(destination: NavigationScreenView()){
                                 HStack{
@@ -96,6 +97,7 @@ struct ContentView: View {
                                     .overlay(RoundedRectangle(cornerRadius: 15)
                                         .stroke(Color(red: 51/255, green: 98/255, blue: 164/255), lineWidth: 1))
                                 }
+                                .padding(.horizontal,10)
                                 
                                 NavigationLink(destination: UserSettingsView()){
                                     HStack{

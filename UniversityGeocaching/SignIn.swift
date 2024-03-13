@@ -20,6 +20,7 @@ struct SignIn: View {
             VStack(alignment: .leading, spacing: 15) {
                 
                 Image("SignInScreenImage")
+                    .resizable()
                 
                 Spacer()
                 
