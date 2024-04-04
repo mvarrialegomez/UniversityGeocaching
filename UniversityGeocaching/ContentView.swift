@@ -49,8 +49,8 @@ struct ContentView: View {
                         HStack(alignment: .bottom){
                             NavigationLink(destination: PastQuestView()){
                                 HStack{
-                                    Image(systemName: "checkmark.circle")
-                                    Text("Past Quests")
+                                    Image(systemName: "person.fill")
+                                    Text("User Stats")
                                 }
                                 .frame(width: 150, height: 40)
                                 .padding()
@@ -87,7 +87,7 @@ struct ContentView: View {
                                 NavigationLink(destination: CreateQuestView()){
                                     HStack{
                                         Image(systemName: "checklist.unchecked")
-                                        Text("New Quest")
+                                        Text("Geocaches")
                                     }
                                     .frame(width: 150, height: 40)
                                     .padding()
@@ -101,7 +101,7 @@ struct ContentView: View {
                                 
                                 NavigationLink(destination: UserSettingsView()){
                                     HStack{
-                                        Image(systemName: "person.2.badge.gearshape")
+                                        Image(systemName: "gearshape.fill")
                                         Text("Settings")
                                     }
                                     .frame(width: 150, height: 40)

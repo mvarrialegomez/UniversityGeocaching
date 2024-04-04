@@ -81,6 +81,33 @@ struct SignIn: View {
                             .cornerRadius(20)
                             .padding()
                         }
+                        
+                        // Temporary button to access admin page before functionality is implemented
+                        NavigationLink(destination: AdminView().navigationBarBackButtonHidden()){
+                            HStack{
+                                Image(systemName: "checkmark.circle")
+                                    .foregroundColor(.white)
+                                Text("Admin")
+                                    .font(.title2)
+                                    .bold()
+                                    .foregroundColor(.white)
+                            }
+                            .frame(height: 50)
+                            .frame(maxWidth: .infinity) // how to make a button fill all the space available horizontally
+                            .background(Color.green)
+                            .cornerRadius(20)
+                            .padding()
+                        }
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                     }
                 }
             }
