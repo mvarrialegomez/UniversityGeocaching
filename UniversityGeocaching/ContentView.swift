@@ -9,45 +9,16 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        NavigationView{
-            VStack{
-                Spacer(minLength: 200)
-                ZStack(alignment: .leading) {
-                    Image("Home Page 3")
-                        .resizable()
-                        .aspectRatio(UIImage(named: "Home Page 3")!.size, contentMode: .fill)
-                        .padding(.bottom, 13)
-                    
-                    
-                    /**
-                     Text("University of San Diego")
-                     .font(.system(size: 32, weight: .bold))
-                     .frame(width: 450, height: 00)
-                     .foregroundColor(Color(red: 51/255, green: 98/255, blue: 164/255))
-                     .padding(.vertical, 0)
-                     .padding(.horizontal, 100)
-                     .multilineTextAlignment(.center)
-                     Text(" Geocaching")
-                     .font(.system(size: 40, weight: .bold))
-                     .foregroundColor(Color(red: 0x5D/255, green: 0x96/255, blue: 0x7B/255))
-                     .frame(width: 450, height: 00)
-                     .padding(.vertical, 40)
-                     .padding(.horizontal, 100)
-                     .cornerRadius(40)
-                     .multilineTextAlignment(.center)
-                     Image("Home Page 1")
-                     .resizable()
-                     .frame(width: 350, height: 350)
-                     .cornerRadius(40)
-                     .padding(.vertical, 10)
-                     .padding(.horizontal, 150)
-                     Spacer()
-                     */
-                    
+        ZStack(alignment: .leading) {
+            Image("Home Page 3")
+                .resizable()
+                .edgesIgnoringSafeArea(.all)
+                .aspectRatio(UIImage(named: "Home Page 3")!.size, contentMode: .fill)
                     
                     VStack(){
+                        Spacer()
                         HStack(alignment: .bottom){
-                            NavigationLink(destination: PastQuestView()){
+                            NavigationLink(destination: UserStatsView()){
                                 HStack{
                                     Image(systemName: "person.fill")
                                     Text("User Stats")
@@ -114,15 +85,10 @@ struct ContentView: View {
                                 }
                             }
                         }
-                        
                         .padding(.horizontal)
                     }
-                    .padding(.top, 450)
+                    .padding(.bottom, 150) // Add padding to the bottom of the screen
                 }
-                
-                .padding(.bottom, 200) // Add padding to the bottom of the screen
-            }
-        }
     }
 }
 

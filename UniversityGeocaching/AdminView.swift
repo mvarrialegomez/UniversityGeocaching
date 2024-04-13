@@ -62,7 +62,7 @@ struct AdminView: View {
                     .stroke(Color(red: 51/255, green: 98/255, blue: 164/255), lineWidth: 1))
             }
         }
-        .padding(.vertical,10)
+        //.padding(.vertical,10)
     }
 }
 
