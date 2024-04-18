@@ -38,6 +38,7 @@
 		96DA87F029A5864800284CBE /* SignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DA87ED29A5864800284CBE /* SignIn.swift */; };
 		F32AD42E2BCA1CB00025433E /* UserStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32AD42D2BCA1CB00025433E /* UserStatsView.swift */; };
 		F392A6702B8EA36E00C7D5C8 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F392A66F2B8EA36E00C7D5C8 /* Launch Screen.storyboard */; };
+		F3A097CE2BD0A32B00A7584E /* CacheStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A097CD2BD0A32A00A7584E /* CacheStatusView.swift */; };
 		F3D44FCD2BBE1D4A000706C2 /* AdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D44FCC2BBE1D4A000706C2 /* AdminView.swift */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +82,7 @@
 		96DA87ED29A5864800284CBE /* SignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignIn.swift; sourceTree = "<group>"; };
 		F32AD42D2BCA1CB00025433E /* UserStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatsView.swift; sourceTree = "<group>"; };
 		F392A66F2B8EA36E00C7D5C8 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		F3A097CD2BD0A32A00A7584E /* CacheStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheStatusView.swift; sourceTree = "<group>"; };
 		F3D44FCC2BBE1D4A000706C2 /* AdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -182,6 +184,7 @@
 				85A1CCB629C81E600031EC23 /* NavigationScreenView.swift */,
 				855D914A2A0C384B0044DCFD /* QRScannerView.swift */,
 				F32AD42D2BCA1CB00025433E /* UserStatsView.swift */,
+				F3A097CD2BD0A32A00A7584E /* CacheStatusView.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 			files = (
 				96DA87E6299C499A00284CBE /* DiscoverKnauss.swift in Sources */,
 				96DA87EE29A5864800284CBE /* SignIn.swift in Sources */,
+				F3A097CE2BD0A32B00A7584E /* CacheStatusView.swift in Sources */,
 				F3D44FCD2BBE1D4A000706C2 /* AdminView.swift in Sources */,
 				855D914B2A0C384B0044DCFD /* QRScannerView.swift in Sources */,
 				F32AD42E2BCA1CB00025433E /* UserStatsView.swift in Sources */,

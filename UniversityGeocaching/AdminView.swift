@@ -14,7 +14,7 @@ struct AdminView: View {
             .resizable()
         
         HStack(alignment: .bottom){
-            NavigationLink(destination: CreateQuestView()){
+            NavigationLink(destination: CacheStatusView()){
                 HStack{
                     Image(systemName: "checkmark.circle")
                     Text("Cache Status")

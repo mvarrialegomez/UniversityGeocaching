@@ -10,9 +10,9 @@ import SwiftUI
 struct UserStatsView: View {
     // Sample data
     let pastQuests = [
-        Quest(title: "Quest 1", location: "GYM", completionDate: "2024-03-01"),
-        Quest(title: "Quest 2", location: "SLP", completionDate: "2024-02-15"),
-        Quest(title: "Quest 3", location: "KNAUSS", completionDate: "2024-01-20")
+        Quest(title: "Cache 1", location: "GYM", completionDate: "2024-03-01"),
+        Quest(title: "Cache 2", location: "SLP", completionDate: "2024-02-15"),
+        Quest(title: "Cache 3", location: "KNAUSS", completionDate: "2024-01-20")
     ]
     
     var body: some View {
@@ -35,11 +35,11 @@ struct UserStatsView: View {
                     } //VStack closing
                 
                 VStack {
-                    Text("Past Quests")
+                    Text("Past Caches")
                         .font(.system(size: 30))
                         .bold()
                     
-                    Text("Total quests completed: 3")
+                    Text("Total caches completed: 3")
                         .font(.title2)
                        
                     List(pastQuests, id: \.title) { quest in
