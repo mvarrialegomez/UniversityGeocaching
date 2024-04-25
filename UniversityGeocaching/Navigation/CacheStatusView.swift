@@ -25,7 +25,7 @@ struct CacheStatusView: View {
                                 Label("Maria Varriale Gomez", systemImage: "person.circle.fill")
                             }
                             HStack(spacing: 3) {
-                                Label("Natalie Nyugen", systemImage: "person.circle.fill")
+                                Label("Natalie Nguyen", systemImage: "person.circle.fill")
                             }
                             HStack(spacing: 3) {
                                 Label("David Amano", systemImage: "person.circle.fill")
@@ -52,7 +52,7 @@ struct CacheStatusView: View {
                                 Label("Maria Varriale Gomez", systemImage: "person.circle.fill")
                             }
                             HStack(spacing: 3) {
-                                Label("Natalie Nyugen", systemImage: "person.circle.fill")
+                                Label("Natalie Nguyen", systemImage: "person.circle.fill")
                             }
                             HStack(spacing: 3) {
                                 Label("David Amano", systemImage: "person.circle.fill")
