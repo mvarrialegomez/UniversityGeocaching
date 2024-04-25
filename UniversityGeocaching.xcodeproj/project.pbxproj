@@ -36,6 +36,8 @@
 		96DA87EE29A5864800284CBE /* SignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DA87ED29A5864800284CBE /* SignIn.swift */; };
 		96DA87EF29A5864800284CBE /* SignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DA87ED29A5864800284CBE /* SignIn.swift */; };
 		96DA87F029A5864800284CBE /* SignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DA87ED29A5864800284CBE /* SignIn.swift */; };
+		A6F6F5792BD86AE800B1AA23 /* CreateQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6F5782BD86AE800B1AA23 /* CreateQuery.swift */; };
+		A6F6F57B2BDA00BA00B1AA23 /* CreateLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6F57A2BDA00BA00B1AA23 /* CreateLocation.swift */; };
 		F32AD42E2BCA1CB00025433E /* UserStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32AD42D2BCA1CB00025433E /* UserStatsView.swift */; };
 		F392A6702B8EA36E00C7D5C8 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F392A66F2B8EA36E00C7D5C8 /* Launch Screen.storyboard */; };
 		F3A097CE2BD0A32B00A7584E /* CacheStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A097CD2BD0A32A00A7584E /* CacheStatusView.swift */; };
@@ -80,6 +82,8 @@
 		96DA87E5299C499A00284CBE /* DiscoverKnauss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverKnauss.swift; sourceTree = "<group>"; };
 		96DA87E9299C501600284CBE /* CampusCafes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampusCafes.swift; sourceTree = "<group>"; };
 		96DA87ED29A5864800284CBE /* SignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignIn.swift; sourceTree = "<group>"; };
+		A6F6F5782BD86AE800B1AA23 /* CreateQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQuery.swift; sourceTree = "<group>"; };
+		A6F6F57A2BDA00BA00B1AA23 /* CreateLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateLocation.swift; sourceTree = "<group>"; };
 		F32AD42D2BCA1CB00025433E /* UserStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatsView.swift; sourceTree = "<group>"; };
 		F392A66F2B8EA36E00C7D5C8 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		F3A097CD2BD0A32A00A7584E /* CacheStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheStatusView.swift; sourceTree = "<group>"; };
@@ -185,6 +189,8 @@
 				855D914A2A0C384B0044DCFD /* QRScannerView.swift */,
 				F32AD42D2BCA1CB00025433E /* UserStatsView.swift */,
 				F3A097CD2BD0A32A00A7584E /* CacheStatusView.swift */,
+				A6F6F5782BD86AE800B1AA23 /* CreateQuery.swift */,
+				A6F6F57A2BDA00BA00B1AA23 /* CreateLocation.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -336,6 +342,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6F6F5792BD86AE800B1AA23 /* CreateQuery.swift in Sources */,
+				A6F6F57B2BDA00BA00B1AA23 /* CreateLocation.swift in Sources */,
 				96DA87E6299C499A00284CBE /* DiscoverKnauss.swift in Sources */,
 				96DA87EE29A5864800284CBE /* SignIn.swift in Sources */,
 				F3A097CE2BD0A32B00A7584E /* CacheStatusView.swift in Sources */,
@@ -519,7 +527,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"UniversityGeocaching/Preview Content\"";
-				DEVELOPMENT_TEAM = 649L89S7S2;
+				DEVELOPMENT_TEAM = 4Z9QUYDR37;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UniversityGeocaching/Info.plist;
@@ -538,7 +546,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = MariaVarriale.UniversityGeocaching;
+				PRODUCT_BUNDLE_IDENTIFIER = DavidAmano.UniversityGeocaching;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -554,7 +562,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"UniversityGeocaching/Preview Content\"";
-				DEVELOPMENT_TEAM = 649L89S7S2;
+				DEVELOPMENT_TEAM = 4Z9QUYDR37;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UniversityGeocaching/Info.plist;
@@ -573,7 +581,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = MariaVarriale.UniversityGeocaching;
+				PRODUCT_BUNDLE_IDENTIFIER = DavidAmano.UniversityGeocaching;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
