@@ -120,6 +120,7 @@ struct NavigationScreenView: View {
                             center: location.coordinate,
                             span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
                         )
+                        print(location.coordinate)
                     }
                 }
                 .tabItem {
