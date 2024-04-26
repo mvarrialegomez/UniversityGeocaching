@@ -186,6 +186,6 @@ struct CreateQuery: View {
 
 struct CreateQuery_Previews: PreviewProvider {
     static var previews: some View {
-        CreateQuestView()
+        Geocaches()
     }
 }

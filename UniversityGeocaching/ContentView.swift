@@ -55,7 +55,7 @@ struct ContentView: View {
                         
                         VStack{
                             HStack(alignment: .bottom){
-                                NavigationLink(destination: CreateQuestView()){
+                                NavigationLink(destination: Geocaches()){
                                     HStack{
                                         Image(systemName: "checklist.unchecked")
                                         Text("Geocaches")
