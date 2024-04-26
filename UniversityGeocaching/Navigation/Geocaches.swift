@@ -37,11 +37,11 @@ struct Geocaches: View {
     }
     
     let availCaches = [
-            CacheDetail(title: "Warren Hall", location: CLLocationCoordinate2D(latitude: 32.77154, longitude:  -117.18884)),
-            CacheDetail(title: "Student Life Pavilion", location: CLLocationCoordinate2D(latitude: 32.77244, longitude: -117.18727)),
-            CacheDetail(title: "Copely Library", location: CLLocationCoordinate2D(latitude: 32.771443, longitude: -117.193472)),
-            CacheDetail(title: "USD Torero Store", location: CLLocationCoordinate2D(latitude: 32.772364, longitude: -117.187653))
-        ]
+        CacheDetail(title: "Warren Hall", location: CLLocationCoordinate2D(latitude: 32.77154, longitude:  -117.18884), questionPage: CacheQuestionsPageView(question: "Question 1", options: ["Option 1", "Option 2"])),
+        CacheDetail(title: "Student Life Pavilion", location: CLLocationCoordinate2D(latitude: 32.77244, longitude: -117.18727), questionPage: CacheQuestionsPageView(question: "Question 2", options: ["Option A", "Option B"])),
+        CacheDetail(title: "Copely Library", location: CLLocationCoordinate2D(latitude: 32.771443, longitude: -117.193472), questionPage: CacheQuestionsPageView(question: "Question 3", options: ["Option X", "Option Y"])),
+        CacheDetail(title: "USD Torero Store", location: CLLocationCoordinate2D(latitude: 32.772364, longitude: -117.187653), questionPage: CacheQuestionsPageView(question: "Question 4", options: ["Option Alpha", "Option Beta"]))
+    ]
     
     var body: some View {
         VStack {
@@ -50,13 +50,7 @@ struct Geocaches: View {
                 .bold()
             
             List(sortCachesByDistance(), id: \.title) { cache in
-                Button(action: {
-                                    // Action to perform when the button is tapped
-                                    // For example, navigate to another page
-                                    // You can replace `DestinationView()` with the view you want to navigate to
-                                    // In this example, I'm just printing the title of the selected cache
-                                    print("Navigating to \(cache.title)")
-                }) {
+                NavigationLink(destination: cache.questionPage) {
                     VStack(alignment: .leading) {
                         Text(cache.title)
                             .font(.headline)
@@ -85,6 +79,7 @@ struct Geocaches: View {
             userLocation = location
         }
     }
+    
     class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         private let locationManager = CLLocationManager()
         @Published var location: CLLocation?
@@ -113,6 +108,7 @@ struct Geocaches: View {
 struct CacheDetail {
     var title: String
     var location: CLLocationCoordinate2D
+    var questionPage: CacheQuestionsPageView // Use the actual type here
     
     // Computed property to convert CLLocationCoordinate2D to a formatted string
     var locationString: String {
@@ -125,5 +121,3 @@ struct Geocaches_Previews: PreviewProvider {
         Geocaches()
     }
 }
-
-
