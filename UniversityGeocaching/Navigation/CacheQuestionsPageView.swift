@@ -1,49 +1,58 @@
-//
-//  CacheQuestionsPageView.swift
-//  UniversityGeocaching
-//
-//  Created by Natalie A. Nguyen on 4/26/24.
-//
-
 import SwiftUI
+import UIKit
 
 struct CacheQuestionsPageView: View {
     let question: String
     let options: [String]
-    @State private var selectedOption: String?
+    let correctOptionIndex: Int
+    @State private var selectedOptionIndex: Int?
+    @State private var backgroundColors: [Color]
+
+    init(question: String, options: [String], correctOptionIndex: Int) {
+        self.question = question
+        self.options = options
+        self.correctOptionIndex = correctOptionIndex
+        self._backgroundColors = State(initialValue: Array(repeating: .clear, count: options.count))
+    }
+
+    // Function to vibrate the phone
+    func vibrate() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.error)
+    }
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 20) {
             Text(question)
-                .font(.headline)
-                .padding(.bottom, 10)
-            
-            ForEach(options, id: \.self) { option in
+                .font(.system(size: 30))
+                .bold()
+                .padding(.horizontal)
+
+            ForEach(options.indices, id: \.self) { index in
                 Button(action: {
-                    selectedOption = option
-                }) {
-                    HStack {
-                        if let selected = selectedOption, selected == option {
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundColor(.blue)
-                        } else {
-                            Image(systemName: "circle")
-                                .foregroundColor(.gray)
-                        }
-                        Text(option)
-                            .font(.subheadline)
+                    selectedOptionIndex = index
+                    backgroundColors[index] = index == correctOptionIndex ? .green : .red
+                    if index != correctOptionIndex {
+                        vibrate() // Vibrate if incorrect answer is chosen
                     }
+                }) {
+                    Text(options[index])
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(backgroundColors[index])
+                        .cornerRadius(10)
+                        .padding()
                 }
-                .padding(.bottom, 5)
             }
         }
-        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.white)
     }
 }
 
 struct CacheQuestionsPageView_Previews: PreviewProvider {
     static var previews: some View {
-        CacheQuestionsPageView(question: "What is your favorite color?", options: ["Red", "Blue", "Green", "Yellow"])
+        CacheQuestionsPageView(question: "What is your favorite color?", options: ["Red", "Blue", "Green", "Yellow"], correctOptionIndex: 2)
     }
 }
-

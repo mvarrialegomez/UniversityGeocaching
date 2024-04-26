@@ -37,10 +37,10 @@ struct Geocaches: View {
     }
     
     let availCaches = [
-        CacheDetail(title: "Warren Hall", location: CLLocationCoordinate2D(latitude: 32.77154, longitude:  -117.18884), questionPage: CacheQuestionsPageView(question: "Question 1", options: ["Option 1", "Option 2"])),
-        CacheDetail(title: "Student Life Pavilion", location: CLLocationCoordinate2D(latitude: 32.77244, longitude: -117.18727), questionPage: CacheQuestionsPageView(question: "Question 2", options: ["Option A", "Option B"])),
-        CacheDetail(title: "Copely Library", location: CLLocationCoordinate2D(latitude: 32.771443, longitude: -117.193472), questionPage: CacheQuestionsPageView(question: "Question 3", options: ["Option X", "Option Y"])),
-        CacheDetail(title: "USD Torero Store", location: CLLocationCoordinate2D(latitude: 32.772364, longitude: -117.187653), questionPage: CacheQuestionsPageView(question: "Question 4", options: ["Option Alpha", "Option Beta"]))
+        CacheDetail(title: "Warren Hall", location: CLLocationCoordinate2D(latitude: 32.77154, longitude:  -117.18884), questionPage: CacheQuestionsPageView(question: "Question 1", options: ["Option 1", "Option 2","Option 3", "Option 4"], correctOptionIndex: 0)),
+        CacheDetail(title: "Student Life Pavilion", location: CLLocationCoordinate2D(latitude: 32.77244, longitude: -117.18727), questionPage: CacheQuestionsPageView(question: "Question 2", options: ["Option A", "Option B", "Option C", "Option D"], correctOptionIndex: 0)),
+        CacheDetail(title: "Copely Library", location: CLLocationCoordinate2D(latitude: 32.771443, longitude: -117.193472), questionPage: CacheQuestionsPageView(question: "Question 3", options: ["Option X", "Option Y", "Option Z", "Option AA"], correctOptionIndex: 0)),
+        CacheDetail(title: "USD Torero Store", location: CLLocationCoordinate2D(latitude: 32.772364, longitude: -117.187653), questionPage: CacheQuestionsPageView(question: "Question 4", options: ["Option Alpha", "Option Beta", "Option Charlie", "Option Delta"], correctOptionIndex: 0))
     ]
     
     var body: some View {
