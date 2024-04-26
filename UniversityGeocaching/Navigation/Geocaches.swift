@@ -1,4 +1,4 @@
-//  CreateQuestView.swift
+//  Geocaches.swift
 //  UniversityGeocaching
 //
 //  Created by Tia Merheb on 3/14/23.
@@ -8,85 +8,93 @@
 import SwiftUI
 import CoreLocation
 
-struct CreateQuestView: View {
-    @State private var cacheName: String = ""
-    @State private var difficulty: String = ""
-    @State private var hints: String = ""
-    @State private var radius: String = ""
-
-    private let manager = CLLocationManager()
-    private var cacheCoordinates: String = "0.0, 0.0"
-
-    func validate(cacheName: String) -> Bool {
-        return true //accepts any value at the moment
-    }
-
-    func getCurrentCoordinates() -> String {
-        manager.requestLocation()//uses the users current location
-        //add in a function where they can input coordinates of their choosing
-        return "0.0,0.0" //automatically returns these coordinates
-    }
-
+struct Geocaches: View {
+    @StateObject private var locationManager = LocationManager()
+    @State private var userLocation: CLLocation?
+    
+    let availCaches = [
+        CacheDetail(title: "Warren Hall", location: CLLocationCoordinate2D(latitude: 32.7757, longitude: -117.0719), completionDate: "2024-03-01"),
+        CacheDetail(title: "Student Life Pavilion", location: CLLocationCoordinate2D(latitude: 32.7777, longitude: -117.0724), completionDate: "2024-02-15"),
+        CacheDetail(title: "Copely Library", location: CLLocationCoordinate2D(latitude: 32.7723, longitude: -117.0716), completionDate: "2024-01-20")
+    ]
+    
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Create New Quest")
-                .font(.largeTitle)
-                .padding()
-
-            List {
-                Section(header: Text("Quest Details")) {
-                    HStack {
-                        Text("Cache Name:")
-                        Spacer()
-                        TextField("Enter cache name", text: $cacheName)
+        VStack {
+            Text("Available Caches")
+                .font(.system(size: 30))
+                .bold()
+            
+            List(availCaches, id: \.title) { cache in
+                VStack(alignment: .leading) {
+                    Text(cache.title)
+                        .font(.headline)
+                    Text(cache.locationString) // Use the locationString property here
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .padding(.bottom, 2)
+                    
+                    if let distance = distance(from: cache.location) {
+                        Text(String(format: "%.2f meters away", distance))
+                            .font(.footnote)
+                            .foregroundColor(.gray)
+                    } else {
+                        Text("Distance unknown")
+                            .font(.footnote)
+                            .foregroundColor(.gray)
                     }
-                    HStack {
-                        Text("Difficulty (1-5):")
-                        Spacer()
-                        TextField("Enter difficulty", text: $difficulty)
-                            .keyboardType(.numberPad)
-                    }
-                    HStack {
-                        Text("Hints:")
-                        Spacer()
-                        TextField("Enter hints", text: $hints)
-                    }
-                    HStack {
-                        Text("Radius (feet):")
-                        Spacer()
-                        TextField("Enter radius", text: $radius)
-                            .keyboardType(.numberPad)
-                    }
-                }
-
-                Section(header: Text("Location")) {
-                    HStack {
-                        Text("Coordinates: ")
-                        Spacer()
-                        Text(cacheCoordinates)
-                            .foregroundColor(.secondary)
-                    }
-                    Button(action: {
-                        // Update coordinates here
-                    }) {
-                        Text("Update Coordinates")
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.blue)
-                            .cornerRadius(10)
-                    }
+                    
+                    Text(cache.completionDate)
+                        .font(.footnote)
+                        .foregroundColor(.gray)
                 }
             }
-            .listStyle(GroupedListStyle())
-
-            Spacer()
+        }
+        .onAppear {
+            locationManager.requestLocation()
+        }
+        .onReceive(locationManager.$location) { location in
+            userLocation = location
         }
     }
 }
 
-struct CreateQuestView_Previews: PreviewProvider {
+struct CacheDetail {
+    var title: String
+    var location: CLLocationCoordinate2D
+    var completionDate: String
+    
+    // Computed property to convert CLLocationCoordinate2D to a formatted string
+    var locationString: String {
+        return "\(location.latitude), \(location.longitude)"
+    }
+}
+
+struct Geocaches_Previews: PreviewProvider {
     static var previews: some View {
-        CreateQuestView()
+        Geocaches()
+    }
+}
+
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    private let locationManager = CLLocationManager()
+    @Published var location: CLLocation?
+    
+    override init() {
+        super.init()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization() // Request authorization
+    }
+    
+    func requestLocation() {
+        locationManager.requestLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        location = locations.last
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
     }
 }
