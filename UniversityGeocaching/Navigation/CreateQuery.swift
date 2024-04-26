@@ -42,12 +42,12 @@ struct CreateQuery: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            Text("Create New Quest")
+            Text("Create New Cache")
                 .font(.largeTitle)
                 .padding()
 
             List {
-                Section(header: Text("Quest Details")) {
+                Section(header: Text("Cache Details")) {
                     HStack {
                         Text("Cache Name:")
                         Spacer()
@@ -161,9 +161,9 @@ struct CreateQuery: View {
                 }
 
                 Section(header: Text("Location")) {
-                    NavigationLink(destination: CreateLocation().navigationBarBackButtonHidden())
+                    NavigationLink(destination: SelectOnMapView())
                     {
-                        Text("Update Coordinates")
+                        Text("Set Location")
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
@@ -171,6 +171,11 @@ struct CreateQuery: View {
                             .cornerRadius(10)
                     }
                 }
+                /* Add if you have time, must impliment image upload code
+                Section(header: Text("Image")) {
+                    
+                }
+                 */
             }
             .listStyle(GroupedListStyle())
 
