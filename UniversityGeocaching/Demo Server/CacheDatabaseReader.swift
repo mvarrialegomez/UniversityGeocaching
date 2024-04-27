@@ -9,7 +9,8 @@ import Foundation
 import CoreLocation
 
 // Function to read CSV file and return an array of Cache objects
-func readCSV(fileName: String) -> [Cache]? {
+func readCacheCSV() -> [Cache]? {
+    let fileName = "CacheDatabase"
     if let filePath = Bundle.main.path(forResource: fileName, ofType: "csv") {
         do {
             let content = try String(contentsOfFile: filePath)
@@ -18,8 +19,8 @@ func readCSV(fileName: String) -> [Cache]? {
             for row in rows {
                 let columns = row.components(separatedBy: ",")
                 if columns.count >= 3 {
-                    if let latitude = Double(columns[1]), let longitude = Double(columns[2]) {
-                        let cache = Cache(name: columns[0], coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+                    if let latitude = Double(columns[2]), let longitude = Double(columns[3]) {
+                        let cache = Cache(name: columns[1], coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
                         csvCaches.append(cache)
                     }
                 }

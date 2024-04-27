@@ -10,7 +10,6 @@ import Foundation
 import MapKit
 import SwiftUI
 import CoreLocation
-import CodeScanner
 
 struct Cache: Identifiable {
     var id = UUID()
@@ -29,24 +28,14 @@ struct NavigationScreenView: View {
     
     @State var showingUserLocation = false
     
-    //for QR code scanner
-    @State var isPresentingScanner = false
-    @State var scannedCode: String = "Scan a QR code to get started."
-    
-    @State var isPresentingFinishPopUp = false
-    
     // Replace caches list with @State variable
-    @State var caches: [Cache] = []
-    
-    func showFinishPopUp() {
-        self.isPresentingFinishPopUp = true
-    }
+    @State var caches = readCacheCSV()
     
     var body: some View {
         TabView {
             // Map tab
             ZStack { //ZStack open
-                Map(coordinateRegion: $region, showsUserLocation: showingUserLocation, annotationItems: caches) {
+                Map(coordinateRegion: $region, showsUserLocation: showingUserLocation, annotationItems: caches!) {
                     
                     cache in MapAnnotation(coordinate: cache.coordinate) {
                         
@@ -103,13 +92,7 @@ struct NavigationScreenView: View {
                     Text("Map")
                 }
             } // ZStack close
-            
-            .sheet(isPresented: $isPresentingFinishPopUp) {
-                FinishPopUpView(isPresentingFinishPopUp: $isPresentingFinishPopUp)
-            }
             .edgesIgnoringSafeArea(.all)
-            
-            
         }
         
         class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
@@ -138,46 +121,6 @@ struct NavigationScreenView: View {
         }
     } //end of Navigation Screen View struct
                  
-struct FinishPopUpView: View {
-    @Binding var isPresentingFinishPopUp: Bool
-
-    var body: some View {
-        VStack {
-            Text("Quest Completed!")
-                .font(.title)
-                .fontWeight(.bold)
-                .padding()
-            Image(systemName: "checkmark.circle.fill")
-                .resizable()
-                .frame(width: 80, height: 80)
-                .foregroundColor(.green)
-                .padding()
-            Text("Congratulations, you have finished the quest!")
-                .multilineTextAlignment(.center)
-                .padding()
-            Button(action: {
-                // Dismiss the pop-up
-                dismiss()
-            }) {
-                Text("Close")
-                    .fontWeight(.bold)
-                    .padding()
-                    .foregroundColor(.white)
-                    .background(Color.blue)
-                    .cornerRadius(10)
-            }
-        }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(20)
-        .shadow(radius: 20)
-    }
-
-    func dismiss() {
-        isPresentingFinishPopUp = false
-    }
-}
-
 struct DetailView: View {
     var body: some View {
         Text("Detail View")
