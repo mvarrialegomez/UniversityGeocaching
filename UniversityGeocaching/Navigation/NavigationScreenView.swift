@@ -35,37 +35,12 @@ struct NavigationScreenView: View {
     
     @State var isPresentingFinishPopUp = false
     
+    // Replace caches list with @State variable
+    @State var caches: [Cache] = []
+    
     func showFinishPopUp() {
         self.isPresentingFinishPopUp = true
     }
-    
-    //qr code scannersheet
-    var scannerSheet: some View {
-        CodeScannerView(
-            codeTypes: [.qr],
-            completion: { result in
-                if case let .success(code) = result {
-                    self.scannedCode = code.string
-                    self.isPresentingScanner = false
-                    if let url = URL(string: scannedCode), UIApplication.shared.canOpenURL(url) {
-                        UIApplication.shared.open(url)
-                        // show the finish popup after successfully scanning the QR code
-                        self.showFinishPopUp()
-                    } else {
-                        // Show an error or handle non-URL QR codes as needed
-                    }
-                }
-            }
-        )
-    }
-    
-    
-    var caches = [
-        Cache(id: UUID(), name: "USD Torero Store", coordinate: CLLocationCoordinate2D(latitude: 32.772364, longitude: -117.187653)),
-        Cache(id: UUID(), name: "Student Life Pavilion", coordinate: CLLocationCoordinate2D(latitude: 32.77244, longitude: -117.18727)),
-        Cache(id: UUID(), name: "Warren Hall", coordinate: CLLocationCoordinate2D(latitude: 32.77154, longitude:  -117.18884)),
-        Cache(id: UUID(), name: "Copley Library", coordinate: CLLocationCoordinate2D(latitude: 32.771443, longitude: -117.193472)),
-    ]
     
     var body: some View {
         TabView {
