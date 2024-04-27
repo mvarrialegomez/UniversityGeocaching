@@ -38,7 +38,8 @@
 		96DA87F029A5864800284CBE /* SignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DA87ED29A5864800284CBE /* SignIn.swift */; };
 		A669C2AB2BDCA9A4003C90D2 /* CacheDatabase.csv in Resources */ = {isa = PBXBuildFile; fileRef = A669C2AA2BDCA9A4003C90D2 /* CacheDatabase.csv */; };
 		A669C2AD2BDCAA28003C90D2 /* IntegratedUserCacheDatabase.csv in Resources */ = {isa = PBXBuildFile; fileRef = A669C2AC2BDCAA28003C90D2 /* IntegratedUserCacheDatabase.csv */; };
-		A669C2AF2BDCB13D003C90D2 /* UserDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A669C2AE2BDCB13D003C90D2 /* UserDatabase.swift */; };
+		A669C2AF2BDCB13D003C90D2 /* UserDatabaseReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A669C2AE2BDCB13D003C90D2 /* UserDatabaseReader.swift */; };
+		A669C2B12BDCC798003C90D2 /* UserDatabase.csv in Resources */ = {isa = PBXBuildFile; fileRef = A669C2B02BDCC798003C90D2 /* UserDatabase.csv */; };
 		A6F6F5792BD86AE800B1AA23 /* CreateQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6F5782BD86AE800B1AA23 /* CreateQuery.swift */; };
 		A6F6F57D2BDA13CB00B1AA23 /* SelectOnMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6F57C2BDA13CB00B1AA23 /* SelectOnMap.swift */; };
 		F32AD42E2BCA1CB00025433E /* UserStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32AD42D2BCA1CB00025433E /* UserStatsView.swift */; };
@@ -86,10 +87,10 @@
 		96DA87E5299C499A00284CBE /* DiscoverKnauss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverKnauss.swift; sourceTree = "<group>"; };
 		96DA87E9299C501600284CBE /* CampusCafes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampusCafes.swift; sourceTree = "<group>"; };
 		96DA87ED29A5864800284CBE /* SignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignIn.swift; sourceTree = "<group>"; };
-		A669C2A92BDCA982003C90D2 /* UserDatabase.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserDatabase.csv; sourceTree = "<group>"; };
 		A669C2AA2BDCA9A4003C90D2 /* CacheDatabase.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = CacheDatabase.csv; sourceTree = "<group>"; };
 		A669C2AC2BDCAA28003C90D2 /* IntegratedUserCacheDatabase.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = IntegratedUserCacheDatabase.csv; sourceTree = "<group>"; };
-		A669C2AE2BDCB13D003C90D2 /* UserDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDatabase.swift; sourceTree = "<group>"; };
+		A669C2AE2BDCB13D003C90D2 /* UserDatabaseReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDatabaseReader.swift; sourceTree = "<group>"; };
+		A669C2B02BDCC798003C90D2 /* UserDatabase.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserDatabase.csv; sourceTree = "<group>"; };
 		A6F6F5782BD86AE800B1AA23 /* CreateQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQuery.swift; sourceTree = "<group>"; };
 		A6F6F57C2BDA13CB00B1AA23 /* SelectOnMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectOnMap.swift; sourceTree = "<group>"; };
 		F32AD42D2BCA1CB00025433E /* UserStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatsView.swift; sourceTree = "<group>"; };
@@ -215,11 +216,11 @@
 		A669C2A82BDC9E27003C90D2 /* Demo Server */ = {
 			isa = PBXGroup;
 			children = (
-				A669C2A92BDCA982003C90D2 /* UserDatabase.csv */,
 				A669C2AA2BDCA9A4003C90D2 /* CacheDatabase.csv */,
 				A669C2AC2BDCAA28003C90D2 /* IntegratedUserCacheDatabase.csv */,
-				A669C2AE2BDCB13D003C90D2 /* UserDatabase.swift */,
+				A669C2AE2BDCB13D003C90D2 /* UserDatabaseReader.swift */,
 				867FAEE32BDCB6C4005829E3 /* CacheDatabaseReader.swift */,
+				A669C2B02BDCC798003C90D2 /* UserDatabase.csv */,
 			);
 			path = "Demo Server";
 			sourceTree = "<group>";
@@ -339,6 +340,7 @@
 				659750F729C4EF0200CF7990 /* .gitignore in Resources */,
 				F392A6702B8EA36E00C7D5C8 /* Launch Screen.storyboard in Resources */,
 				967FF46229930CC2005EB8BC /* Assets.xcassets in Resources */,
+				A669C2B12BDCC798003C90D2 /* UserDatabase.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,7 +368,7 @@
 				A6F6F5792BD86AE800B1AA23 /* CreateQuery.swift in Sources */,
 				96DA87E6299C499A00284CBE /* DiscoverKnauss.swift in Sources */,
 				96DA87EE29A5864800284CBE /* SignIn.swift in Sources */,
-				A669C2AF2BDCB13D003C90D2 /* UserDatabase.swift in Sources */,
+				A669C2AF2BDCB13D003C90D2 /* UserDatabaseReader.swift in Sources */,
 				F3A097CE2BD0A32B00A7584E /* CacheStatusView.swift in Sources */,
 				F3D44FCD2BBE1D4A000706C2 /* AdminView.swift in Sources */,
 				867FAEE42BDCB6C4005829E3 /* CacheDatabaseReader.swift in Sources */,
@@ -550,7 +552,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"UniversityGeocaching/Preview Content\"";
-				DEVELOPMENT_TEAM = 2D47R63397;
+				DEVELOPMENT_TEAM = 4Z9QUYDR37;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UniversityGeocaching/Info.plist;
@@ -569,7 +571,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = NatalieNguyen.UniversityGeocaching;
+				PRODUCT_BUNDLE_IDENTIFIER = DavidAmano.UniversityGeocaching;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
