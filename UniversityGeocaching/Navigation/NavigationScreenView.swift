@@ -13,8 +13,14 @@ import CoreLocation
 
 struct Cache: Identifiable {
     var id = UUID()
+    var serial: String
     var name: String
     var coordinate: CLLocationCoordinate2D
+    var question: String
+    var correctAnswer: String
+    var answer2: String
+    var answer3: String
+    var answer4: String
 }
 
 struct NavigationScreenView: View {

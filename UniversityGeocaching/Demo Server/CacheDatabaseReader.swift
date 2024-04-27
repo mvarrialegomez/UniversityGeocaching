@@ -17,11 +17,13 @@ func readCacheCSV() -> [Cache]? {
             let rows = content.components(separatedBy: .newlines)
             var csvCaches: [Cache] = []
             for row in rows {
-                let columns = row.components(separatedBy: ",")
-                if columns.count >= 3 {
-                    if let latitude = Double(columns[2]), let longitude = Double(columns[3]) {
-                        let cache = Cache(name: columns[1], coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
-                        csvCaches.append(cache)
+                if row != ""{
+                    let columns = row.components(separatedBy: ",")
+                    if columns.count >= 3 {
+                        if let latitude = Double(columns[2]), let longitude = Double(columns[3]) {
+                            let cache = Cache(serial: columns[0], name: columns[1], coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), question: columns[4], correctAnswer: columns[5], answer2: columns[6], answer3: columns[7], answer4: columns[8])
+                            csvCaches.append(cache)
+                        }
                     }
                 }
             }
