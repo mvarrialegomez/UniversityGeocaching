@@ -13,6 +13,7 @@ struct SignIn: View {
     @State var name: String = ""
     @State var password: String = ""
     @State var showPassword: Bool = false
+    @State var verified: Bool?
     
     
     var body: some View {
@@ -66,7 +67,10 @@ struct SignIn: View {
                 
                 VStack{
                     HStack{
-                        NavigationLink(destination: ContentView().navigationBarBackButtonHidden()){
+                        //NavigationLink(destination: ContentView().navigationBarBackButtonHidden()){
+                        Button(action: {
+                            verified = VerifyUser(email: name, password: password, access: false)
+                        }){
                             HStack{
                                 Image(systemName: "checkmark.circle")
                                     .foregroundColor(.white)

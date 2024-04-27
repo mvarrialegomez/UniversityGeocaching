@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+func VerifyUser(email: String, password: String, access: Bool) -> Bool {
+    return false
+}
