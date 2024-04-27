@@ -25,23 +25,18 @@ struct Geocaches: View {
     }
     
     // Function to sort caches by distance from user location
-    func sortCachesByDistance() -> [CacheDetail] {
-        guard let userLocation = userLocation else { return availCaches }
-        return availCaches.sorted { cache1, cache2 in
-            guard let distance1 = distance(from: cache1.location),
-                  let distance2 = distance(from: cache2.location) else {
+    func sortCachesByDistance() -> [Cache] {
+        guard let userLocation = userLocation else { return availCaches! }
+        return (availCaches!.sorted { cache1, cache2 in
+            guard let distance1 = distance(from: cache1.coordinate),
+                  let distance2 = distance(from: cache2.coordinate) else {
                 return false
             }
             return distance1 < distance2
-        }
+        })
     }
     
-    let availCaches = [
-        CacheDetail(title: "Warren Hall", location: CLLocationCoordinate2D(latitude: 32.77154, longitude:  -117.18884), questionPage: CacheQuestionsPageView(question: "Question 1", options: ["Option 1", "Option 2","Option 3", "Option 4"], correctOptionIndex: 0)),
-        CacheDetail(title: "Student Life Pavilion", location: CLLocationCoordinate2D(latitude: 32.77244, longitude: -117.18727), questionPage: CacheQuestionsPageView(question: "Question 2", options: ["Option A", "Option B", "Option C", "Option D"], correctOptionIndex: 0)),
-        CacheDetail(title: "Copely Library", location: CLLocationCoordinate2D(latitude: 32.771443, longitude: -117.193472), questionPage: CacheQuestionsPageView(question: "Question 3", options: ["Option X", "Option Y", "Option Z", "Option AA"], correctOptionIndex: 0)),
-        CacheDetail(title: "USD Torero Store", location: CLLocationCoordinate2D(latitude: 32.772364, longitude: -117.187653), questionPage: CacheQuestionsPageView(question: "Question 4", options: ["Option Alpha", "Option Beta", "Option Charlie", "Option Delta"], correctOptionIndex: 0))
-    ]
+    let availCaches = readCacheCSV()
     
     var body: some View {
         VStack {
@@ -49,17 +44,17 @@ struct Geocaches: View {
                 .font(.system(size: 30))
                 .bold()
             
-            List(sortCachesByDistance(), id: \.title) { cache in
-                NavigationLink(destination: cache.questionPage) {
+            List(sortCachesByDistance(), id: \.name) { cache in
+                NavigationLink(destination: CacheQuestionsPageView(question: cache.question, correctAnswer: cache.correctAnswer, answer2: cache.answer2, answer3: cache.answer3, answer4: cache.answer4)) {
                     VStack(alignment: .leading) {
-                        Text(cache.title)
+                        Text(cache.name)
                             .font(.headline)
-                        Text("Coordinates: \(cache.locationString)") // Use the locationString property here
+                        Text("Coordinates: \(cache.coordinate.latitude), \(cache.coordinate.longitude)")
                             .font(.footnote)
                             .foregroundColor(.secondary)
                             .padding(.bottom, 2)
                         
-                        if let distance = distance(from: cache.location) {
+                        if let distance = distance(from: cache.coordinate) {
                             Text(String(format: "%.2f meters away", distance))
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
@@ -102,17 +97,6 @@ struct Geocaches: View {
         func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
             print(error.localizedDescription)
         }
-    }
-}
-
-struct CacheDetail {
-    var title: String
-    var location: CLLocationCoordinate2D
-    var questionPage: CacheQuestionsPageView // Use the actual type here
-    
-    // Computed property to convert CLLocationCoordinate2D to a formatted string
-    var locationString: String {
-        return "\(location.latitude), \(location.longitude)"
     }
 }
 
