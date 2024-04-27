@@ -8,6 +8,14 @@
 import SwiftUI
 import Foundation
 
+struct User: Identifiable {
+    var id = UUID()
+    var Email: String
+    var Password: String
+    var Access: String
+    var Name: String
+}
+
 struct SignIn: View {
     
     @State var name: String = ""
@@ -70,6 +78,12 @@ struct SignIn: View {
                         //NavigationLink(destination: ContentView().navigationBarBackButtonHidden()){
                         Button(action: {
                             verified = VerifyUser(email: name, password: password, access: false)
+                            if verified ?? false {
+                                print("verified")
+                            }
+                            else{
+                                print("FUCK")
+                            }
                         }){
                             HStack{
                                 Image(systemName: "checkmark.circle")
