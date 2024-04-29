@@ -7,14 +7,12 @@
 import SwiftUI
 import UIKit
 
-// Function to shuffle an array and return a new shuffled list
-func shuffle<T>(_ array: [T]) -> [T] {
-    var shuffledArray = array
-    for i in 0..<(shuffledArray.count - 1) {
-        let j = Int(arc4random_uniform(UInt32(shuffledArray.count - i))) + i
-        shuffledArray.swapAt(i, j)
+// Function to shuffle an array in place
+func shuffle<T>(_ array: inout [T]) {
+    for i in 0..<(array.count - 1) {
+        let j = Int(arc4random_uniform(UInt32(array.count - i))) + i
+        array.swapAt(i, j)
     }
-    return shuffledArray
 }
 
 struct CacheQuestionsPageView: View {
@@ -25,6 +23,7 @@ struct CacheQuestionsPageView: View {
     let answer4: String
     @State private var selectedOptionIndex: Int?
     @State private var backgroundColors: [Color]
+    @State private var options: [String] = [] // Initialize options with default values
 
     init(question: String, correctAnswer: String, answer2: String, answer3: String, answer4: String) {
         self.question = question
@@ -42,8 +41,6 @@ struct CacheQuestionsPageView: View {
     }
     
     var body: some View {
-        var options = [correctAnswer, answer2, answer3, answer4]
-        var shuffledOptions = shuffle(options)
         VStack(alignment: .leading, spacing: 20) {
             Text(question)
                 .font(.system(size: 30))
@@ -53,12 +50,12 @@ struct CacheQuestionsPageView: View {
             ForEach(options.indices, id: \.self) { index in
                 Button(action: {
                     selectedOptionIndex = index
-                    backgroundColors[index] = shuffledOptions[index] == correctAnswer ? .green : .red
-                    if shuffledOptions[index] != correctAnswer {
+                    backgroundColors[index] = options[index] == correctAnswer ? .green : .red
+                    if options[index] != correctAnswer {
                         vibrate() // Vibrate if incorrect answer is chosen
                     }
                 }) {
-                    Text(shuffledOptions[index])
+                    Text(options[index])
                         .font(.headline)
                         .foregroundColor(.primary)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -70,6 +67,10 @@ struct CacheQuestionsPageView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.white)
+        .onAppear {
+            options = [correctAnswer, answer2, answer3, answer4]
+            shuffle(&options) // Shuffle the options array before using it
+        }
     }
 }
 
