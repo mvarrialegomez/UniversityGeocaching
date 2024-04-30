@@ -46,6 +46,7 @@ struct CacheQuestionsPageView: View {
                 .font(.system(size: 30))
                 .bold()
                 .padding(.horizontal)
+                .padding(.top, 5)
 
             ForEach(options.indices, id: \.self) { index in
                 Button(action: {

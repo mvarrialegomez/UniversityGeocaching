@@ -43,26 +43,68 @@ struct Geocaches: View {
             Text("Available Caches")
                 .font(.system(size: 30))
                 .bold()
+                .padding(.bottom, 2)
+            
+            Text("Caches will become available when you are within 10m of the cache")
+                .font(.subheadline)
+                .foregroundColor(.gray)
+                .multilineTextAlignment(.center)
             
             List(sortCachesByDistance(), id: \.name) { cache in
-                NavigationLink(destination: CacheQuestionsPageView(question: cache.question, correctAnswer: cache.correctAnswer, answer2: cache.answer2, answer3: cache.answer3, answer4: cache.answer4)) {
-                    VStack(alignment: .leading) {
-                        Text(cache.name)
-                            .font(.headline)
-                        Text("Coordinates: \(cache.coordinate.latitude), \(cache.coordinate.longitude)")
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
-                            .padding(.bottom, 2)
-                        
-                        if let distance = distance(from: cache.coordinate) {
-                            Text(String(format: "%.2f meters away", distance))
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                        } else {
-                            Text("Distance unknown")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
+                if let distance = distance(from: cache.coordinate) {
+                    if distance <= 100 {
+                        // Navigate to the next page only if the user is 10 meters or less away from the cache
+                        VStack(alignment: .leading) {
+                            NavigationLink(destination: CacheQuestionsPageView(question: cache.question, correctAnswer: cache.correctAnswer, answer2: cache.answer2, answer3: cache.answer3, answer4: cache.answer4)) {
+                                VStack(alignment: .leading) {
+                                    Text(cache.name)
+                                        .font(.headline)
+                                    Text("Coordinates: \(cache.coordinate.latitude), \(cache.coordinate.longitude)")
+                                        .font(.footnote)
+                                        .foregroundColor(.secondary)
+                                        .padding(.bottom, 2)
+                                    Text(String(format: "%.2f meters away", distance))
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                }
+                            }
                         }
+                    } else {
+                        // Show a disabled button if the user is more than 10 meters away
+                        VStack(alignment: .leading) {
+                            Button(action: {}) {
+                                VStack(alignment: .leading) {
+                                    Text(cache.name)
+                                        .font(.headline)
+                                    Text("Coordinates: \(cache.coordinate.latitude), \(cache.coordinate.longitude)")
+                                        .font(.footnote)
+                                        .foregroundColor(.secondary)
+                                        .padding(.bottom, 2)
+                                    Text(String(format: "%.2f meters away", distance))
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                }
+                            }
+                            .disabled(true)
+                        }
+                    }
+                } else {
+                    // Show a disabled button if the distance is unknown
+                    VStack(alignment: .leading) {
+                        Button(action: {}) {
+                            VStack(alignment: .leading) {
+                                Text(cache.name)
+                                    .font(.headline)
+                                Text("Coordinates: \(cache.coordinate.latitude), \(cache.coordinate.longitude)")
+                                    .font(.footnote)
+                                    .foregroundColor(.secondary)
+                                    .padding(.bottom, 2)
+                                Text("Distance unknown")
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                        .disabled(true)
                     }
                 }
             }

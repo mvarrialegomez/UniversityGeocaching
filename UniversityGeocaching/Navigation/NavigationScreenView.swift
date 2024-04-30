@@ -37,50 +37,50 @@ struct NavigationScreenView: View {
     // Replace caches list with @State variable
     @State var caches = readCacheCSV()
     
+    @State var selectedCache: Cache? = nil
+    @State var showAlert = false
+    
     var body: some View {
-        TabView {
-            // Map tab
-            ZStack { //ZStack open
-                Map(coordinateRegion: $region, showsUserLocation: showingUserLocation, annotationItems: caches!) {
-                    
-                    cache in MapAnnotation(coordinate: cache.coordinate) {
-                        
-                        Image("cachePin.fill")
-                            .foregroundColor(.blue)
-                            .foregroundStyle(.blue)
-                            .imageScale(.large)
-                        
-                            // Prints name of cache on console on tap
-                            .onTapGesture {
-                                print(cache.name)
-                            }
+        NavigationView {
+            TabView {
+                // Map tab
+                ZStack {
+                    Map(coordinateRegion: $region, showsUserLocation: showingUserLocation, annotationItems: caches!) { cache in
+                        MapAnnotation(coordinate: cache.coordinate) {
+                            Image("cachePin.fill")
+                                .foregroundColor(.blue)
+                                .imageScale(.large)
+                                .onTapGesture {
+                                    if let userLocation = locationManager.location, userLocation.distance(from: CLLocation(latitude: cache.coordinate.latitude, longitude: cache.coordinate.longitude)) <= 100 {
+                                        selectedCache = cache
+                                    } else {
+                                        showAlert = true
+                                    }
+                                }
+                        }
                     }
                     
-                }
-                
-                VStack {
-                    Spacer()
-                    HStack {
+                    VStack {
                         Spacer()
-                        // Button to show user's current location
-                        Button(action: {
-                            showingUserLocation = true
-                            locationManager.requestLocation()
-                        }) {
-                            Image(systemName: "location.circle.fill")
-                                .foregroundColor(.blue)
-                                .font(.system(size: 32))
-                                .foregroundColor(.blue)
-                                .padding(.top, 10)
-                                .padding(.leading, 20)
-                                .padding(.bottom, 80)
-                                .padding(.trailing, 40)
-                                .font(.system(size: 32))
+                        HStack {
+                            Spacer()
+                            // Button to show user's current location
+                            Button(action: {
+                                showingUserLocation = true
+                                locationManager.requestLocation()
+                            }) {
+                                Image(systemName: "location.circle.fill")
+                                    .foregroundColor(.blue)
+                                    .font(.system(size: 32))
+                                    .padding(.top, 10)
+                                    .padding(.leading, 20)
+                                    .padding(.bottom, 80)
+                                    .padding(.trailing, 40)
+                                    .font(.system(size: 32))
+                            }
                         }
                     }
                 }
-            }
-                
                 .onAppear {
                     locationManager.requestLocation()
                 }
@@ -97,35 +97,43 @@ struct NavigationScreenView: View {
                     Image(systemName: "map")
                     Text("Map")
                 }
-            } // ZStack close
+            }
             .edgesIgnoringSafeArea(.all)
+            .navigationTitle("Map")
+            .navigationBarTitleDisplayMode(.inline)
+            .sheet(item: $selectedCache) { cache in
+                CacheQuestionsPageView(question: cache.question, correctAnswer: cache.correctAnswer, answer2: cache.answer2, answer3: cache.answer3, answer4: cache.answer4)
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("You're Too Far!").foregroundColor(.red), message: Text("Get within 10m of the cache."), dismissButton: .default(Text("OK")))
+                        }
+        }
+    }
+    
+    class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+        private let locationManager = CLLocationManager()
+        @Published var location: CLLocation?
+        
+        override init() {
+            super.init()
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
         }
         
-        class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
-            private let locationManager = CLLocationManager()
-            @Published var location: CLLocation?
-            
-           
-            override init() {
-                super.init()
-                locationManager.delegate = self
-                locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            }
-            
-            func requestLocation() {
-                locationManager.requestWhenInUseAuthorization()
-                locationManager.requestLocation()
-            }
-            
-            func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-                location = locations.last
-            }
-            
-            func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-                print(error.localizedDescription)
-            }
+        func requestLocation() {
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.requestLocation()
         }
-    } //end of Navigation Screen View struct
+        
+        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            location = locations.last
+        }
+        
+        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+            print(error.localizedDescription)
+        }
+    }
+}
                  
 struct DetailView: View {
     var body: some View {
