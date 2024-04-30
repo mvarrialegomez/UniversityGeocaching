@@ -8,16 +8,23 @@
 import SwiftUI
 
 struct UserStatsView: View {
+    @EnvironmentObject var userData: UserData
+    
     // Sample data
     let pastQuests = [
         Quest(title: "Cache 1", location: "GYM", completionDate: "2024-03-01"),
         Quest(title: "Cache 2", location: "SLP", completionDate: "2024-02-15"),
-        Quest(title: "Cache 3", location: "KNAUSS", completionDate: "2024-01-20")
+        Quest(title: "Cache 3", location: "KNAUSS", completionDate: "2024-01-20"),
     ]
     
     var body: some View {
         NavigationView {
             VStack {
+                
+                Text(userData.userEmail)
+                    .font(.system(size: 36))
+                    .bold()
+                    .padding()
                 
                 Text("User Stats")
                     .font(.system(size: 36))

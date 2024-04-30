@@ -8,12 +8,18 @@
 
 import SwiftUI
 
+class UserData: ObservableObject {
+    @Published var userEmail: String = ""
+}
+
 @main
 struct UniversityGeocachingApp: App {
+    let userData = UserData()
+    
     var body: some Scene {
         WindowGroup {
             SignIn()
-            //ContentView()
+                .environmentObject(userData)
         }
     }
 }

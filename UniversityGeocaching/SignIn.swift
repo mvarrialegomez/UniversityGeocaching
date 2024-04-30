@@ -6,7 +6,6 @@
 //  Continued by Maria Varriale Gomez, David Amano, Natalie Nguyen, Michael Gallagher, and Sean Limqueco in Spring 2024.
 //
 import SwiftUI
-import Foundation
 
 struct User: Identifiable {
     var id = UUID()
@@ -21,8 +20,10 @@ struct SignIn: View {
     @State var name: String = ""
     @State var password: String = ""
     @State var showPassword: Bool = false
-    @State var verified: Bool?
+    @State var isSignedIn: Bool = false
+    @State var showAlert: Bool = false
     
+    @EnvironmentObject var userData: UserData
     
     var body: some View {
         NavigationView{
@@ -47,26 +48,26 @@ struct SignIn: View {
                 HStack {
                     Group {
                         if showPassword {
-                            TextField("Password", // how to create a secure text field
+                            TextField("Password",
                                       text: $password,
-                                      prompt: Text("Password").foregroundColor(.blue)) // How to change the color of the TextField Placeholder
+                                      prompt: Text("Password").foregroundColor(.blue))
                         } else {
-                            SecureField("Password", // how to create a secure text field
+                            SecureField("Password",
                                         text: $password,
-                                        prompt: Text("Password").foregroundColor(.blue)) // How to change the color of the TextField Placeholder
+                                        prompt: Text("Password").foregroundColor(.blue))
                         }
                     }
                     .padding(10)
                     .overlay {
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.blue, lineWidth: 2) // How to add rounded corner to a TextField and change it colour
+                            .stroke(.blue, lineWidth: 2)
                     }
                     
                     Button {
                         showPassword.toggle()
                     } label: {
-                        Image(systemName: showPassword ? "eye.slash" : "eye")
-                            .foregroundColor(.blue) // how to change image based in a State variable
+                        Image(systemName: showPassword ? "eye" : "eye.slash")
+                            .foregroundColor(.blue)
                     }
                     
                 }.padding(.horizontal)
@@ -75,14 +76,19 @@ struct SignIn: View {
                 
                 VStack{
                     HStack{
-                        //NavigationLink(destination: ContentView().navigationBarBackButtonHidden()){
+                        NavigationLink(destination: ContentView(), isActive: $isSignedIn) {
+                            EmptyView()
+                        }
+                        
                         Button(action: {
-                            verified = VerifyUser(email: name, password: password, access: false)
-                            if verified ?? false {
+                            let verified = VerifyUser(email: name, password: password, access: false)
+                            if verified {
                                 print("verified")
+                                userData.userEmail = name // Save the email to the environment object
+                                isSignedIn = true
                             }
-                            else{
-                                print("FUCK")
+                            else {
+                                showAlert = true
                             }
                         }){
                             HStack{
@@ -94,13 +100,12 @@ struct SignIn: View {
                                     .foregroundColor(.white)
                             }
                             .frame(height: 50)
-                            .frame(maxWidth: .infinity) // how to make a button fill all the space available horizontally
+                            .frame(maxWidth: .infinity)
                             .background(Color.blue)
                             .cornerRadius(20)
                             .padding()
                         }
                         
-                        // Temporary button to access admin page before functionality is implemented
                         NavigationLink(destination: AdminView().navigationBarBackButtonHidden()){
                             HStack{
                                 Image(systemName: "checkmark.circle")
@@ -111,24 +116,21 @@ struct SignIn: View {
                                     .foregroundColor(.white)
                             }
                             .frame(height: 50)
-                            .frame(maxWidth: .infinity) // how to make a button fill all the space available horizontally
+                            .frame(maxWidth: .infinity)
                             .background(Color.green)
                             .cornerRadius(20)
                             .padding()
                         }
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
                     }
                 }
             }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Incorrect Credentials"), message: Text("Email or password is incorrect. Please try again."), dismissButton: .default(Text("OK")))
+            }
+        }
+    }
+}
+
             
 //            NavigationLink(destination: ContentView()){
 //                HStack{
@@ -149,9 +151,6 @@ struct SignIn: View {
 //                .padding()
 //            }
         
-        }
-    }
-}
 
 struct SignIn_Previews: PreviewProvider {
     static var previews: some View {
