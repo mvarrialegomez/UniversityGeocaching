@@ -21,7 +21,7 @@ struct UserStatsView: View {
                     .padding()
 
                 VStack(alignment: .leading) {
-                    Text("Name: \(userData.userEmail)")
+                    Text("Name: \(returnUserName(email:userData.userEmail))")
                         .font(.title2)
                     
                     Text("Email: \(userData.userEmail)")

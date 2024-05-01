@@ -49,3 +49,15 @@ func VerifyUser(email: String, password: String, access: Bool) -> Bool {
     }
     return false
 }
+
+func returnUserName(email:String) -> String {
+    var UserList: [User] = []
+    var name: String = ""
+    UserList = readUserCSV() ?? []
+    for user in UserList{
+        if email == user.Email {
+            name = user.Name
+        }
+    }
+    return name
+}

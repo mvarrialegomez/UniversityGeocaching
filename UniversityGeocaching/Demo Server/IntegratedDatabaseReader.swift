@@ -23,6 +23,7 @@ func readUserDataCSV() -> [UserData] {
                 if row != "" {
                     let columns = row.components(separatedBy: ",")
                     email = columns[0]
+                    cacheCompletions = []
                     for col in 0..<columns.count{
                         if let boolValue = Bool(columns[col]) {
                             let cacheData = (header[col], boolValue)
@@ -52,11 +53,11 @@ func getUserStats(email: String) -> [Cache] {
     var userCacheData:[(String,Bool)] = []
     var completedCaches:[Cache] = []
     
-    print(userDataList)
-    
     for data in userDataList{
+        print(email)
         if email == data.userEmail {
             userCacheData = data.userCaches
+            print(userCacheData)
             break
         }
     }
@@ -64,6 +65,7 @@ func getUserStats(email: String) -> [Cache] {
     for cacheBool in userCacheData{
         if let allCaches = allCaches, index < allCaches.count {
             let cacheSerial = allCaches[index].serial
+            print(cacheBool.0, cacheBool.1)
             if cacheBool.0 == cacheSerial && cacheBool.1 {
                 completedCaches.append(allCaches[index])
             }
