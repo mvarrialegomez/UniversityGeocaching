@@ -8,40 +8,35 @@
 import Foundation
 import Combine
 
-func readUserDataFromCSV() -> [UserData] {
+func readUserDataCSV() -> [UserData] {
     var userDataList: [UserData] = []
     
-    if let filepath = Bundle.main.path(forResource: "IntegratedUserCacheDatabase", ofType: "csv") {
+    let fileName = "IntegratedUserCacheDatabase"
+    if let filePath = Bundle.main.path(forResource: fileName, ofType: "csv") {
         do {
-            let contents = try String(contentsOfFile: filepath)
-            let lines = contents.components(separatedBy: .newlines)
-            
-            guard let headerLine = lines.first else {
-                print("CSV file is empty.")
-                return userDataList
-            }
-            
-            let cacheNames = headerLine.components(separatedBy: ",")
-            
-            for line in lines.dropFirst() {
-                let data = line.components(separatedBy: ",")
-                
-                guard data.count == cacheNames.count + 1, // +1 for the email column
-                      let email = data.first?.trimmingCharacters(in: .whitespacesAndNewlines) else {
-                    continue // Skip invalid lines
-                }
-                
-                var cacheCompletions: [(String, Bool)] = []
-                for (index, cacheName) in cacheNames.dropFirst().enumerated() {
-                    if let access = Bool(data[index + 1]) {
-                        cacheCompletions.append((cacheName, access))
+            let content = try String(contentsOfFile: filePath)
+            let rows = content.components(separatedBy: .newlines)
+            var cacheCompletions: [(String,Bool)] = []
+            var email: String = ""
+            let header = rows[0].components(separatedBy: ",")
+            for row in rows {
+                if row != "" {
+                    let columns = row.components(separatedBy: ",")
+                    email = columns[0]
+                    for col in 0..<columns.count{
+                        if let boolValue = Bool(columns[col]) {
+                            let cacheData = (header[col], boolValue)
+                            cacheCompletions.append(cacheData)
+                        }
                     }
                 }
                 
                 let userData = UserData()
+                userData.userEmail = email
+                userData.userCaches = cacheCompletions
                 userDataList.append(userData)
             }
-        } catch {
+        }catch {
             print("Error reading CSV file: \(error)")
         }
     } else {
@@ -49,4 +44,31 @@ func readUserDataFromCSV() -> [UserData] {
     }
     
     return userDataList
+}
+
+func getUserStats(email: String) -> [Cache] {
+    let allCaches = readCacheCSV()
+    let userDataList = readUserDataCSV()
+    var userCacheData:[(String,Bool)] = []
+    var completedCaches:[Cache] = []
+    
+    print(userDataList)
+    
+    for data in userDataList{
+        if email == data.userEmail {
+            userCacheData = data.userCaches
+            break
+        }
+    }
+    var index:Int = 0
+    for cacheBool in userCacheData{
+        if let allCaches = allCaches, index < allCaches.count {
+            let cacheSerial = allCaches[index].serial
+            if cacheBool.0 == cacheSerial && cacheBool.1 {
+                completedCaches.append(allCaches[index])
+            }
+        }
+        index+=1
+    }
+    return completedCaches
 }
