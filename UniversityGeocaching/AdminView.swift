@@ -31,7 +31,7 @@ struct AdminView: View {
         .padding(.vertical,10)
         
         HStack(alignment: .bottom){
-            NavigationLink(destination: CreateQuery()){
+            NavigationLink(destination: CreateCache()){
                 HStack{
                     Image(systemName: "plus.circle")
                     Text("Create Cache")

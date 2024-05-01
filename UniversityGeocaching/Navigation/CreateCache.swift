@@ -9,7 +9,7 @@
 import SwiftUI
 import CoreLocation
 
-struct CreateQuery: View {
+struct CreateCache: View {
     @State private var cacheName: String = ""
     @State private var Question1: String = ""
     @State private var Q1CorrectAnswer: String = ""
