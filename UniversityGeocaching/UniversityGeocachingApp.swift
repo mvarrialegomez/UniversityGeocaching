@@ -10,6 +10,7 @@ import SwiftUI
 
 class UserData: ObservableObject {
     @Published var userEmail: String = ""
+    @Published var userCaches: [(String,Bool)] = [] // Tuple containing cache name and cache completion status
 }
 
 @main

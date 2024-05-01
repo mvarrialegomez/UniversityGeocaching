@@ -10,70 +10,62 @@ import SwiftUI
 struct UserStatsView: View {
     @EnvironmentObject var userData: UserData
     
-    // Sample data
-    let pastQuests = [
-        Quest(title: "Cache 1", location: "GYM", completionDate: "2024-03-01"),
-        Quest(title: "Cache 2", location: "SLP", completionDate: "2024-02-15"),
-        Quest(title: "Cache 3", location: "KNAUSS", completionDate: "2024-01-20"),
-    ]
+    // Get the specific user data object
+    let userDataList = readUserDataFromCSV()
+    
+    // Get the list of all caches
+    let allCaches = readCacheCSV()
     
     var body: some View {
         NavigationView {
             VStack {
-                
-                Text(userData.userEmail)
-                    .font(.system(size: 36))
-                    .bold()
-                    .padding()
-                
-                Text("User Stats")
-                    .font(.system(size: 36))
-                    .bold()
-                    .padding()
-                
                 VStack(alignment: .leading) {
-                    
-                    Text("Name: John Smith")
-                        .font(.title2)
-                    
-                    Text("Email: jsmith@sandiego.edu")
-                        .font(.title2)
-                    
-                    } //VStack closing
+                    Text("Email: \(userData.userEmail)")
+                        .font(.system(size: 20))
+                        .bold()
+                        .padding(.top, 5)
+                }
+                .padding(.horizontal)
                 
                 VStack {
-                    Text("Past Caches")
-                        .font(.system(size: 30))
-                        .bold()
-                    
-                    Text("Total caches completed: 3")
-                        .font(.title2)
-                       
-                    List(pastQuests, id: \.title) { quest in
-                        VStack(alignment: .leading) {
-                            Text(quest.title)
-                                .font(.headline)
-                            Text(quest.location)
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                            Text(quest.completionDate)
-                                .font(.footnote)
-                                .foregroundColor(.gray)
+                    // Find the user data object with matching email
+                    if let user = userDataList.first(where: { $0.userEmail == userData.userEmail }) {
+                        // Filter the caches based on user's accessed caches
+                        let completedCaches = allCaches?.filter { cache in
+                            user.userCaches.contains { cacheInfo in
+                                cacheInfo.0 == cache.serial && cacheInfo.1
+                            }
+                        } ?? []
+                        
+                        Text("Total caches completed: \(completedCaches.count)")
+                            .font(.system(size: 20))
+                            .bold()
+                            .padding(.top, 5)
+                        
+                        List(completedCaches, id: \.id) { cache in
+                            VStack(alignment: .leading) {
+                                Text(cache.name)
+                                    .font(.headline)
+                            }
                         }
+                    } else {
+                        Text("User data not found.")
+                            .font(.system(size: 20))
+                            .bold()
+                            .padding(.top, 5)
                     }
-                }.padding(.top, 50) // Add padding above "Past Quests" - END OF VSTACK
-                
+                }
+                .padding(.horizontal)
+                .navigationBarTitle("User Stats")
             }
         }
     }
 }
 
-struct Quest {
-    let title: String
-    let location: String
-    let completionDate: String
+struct UserStatsView_Previews: PreviewProvider {
+    static var previews: some View {
+        UserStatsView()
+            .environmentObject(UserData()) // Provide a sample UserData object
+    }
 }
 
-#Preview {
-    UserStatsView()
-}
