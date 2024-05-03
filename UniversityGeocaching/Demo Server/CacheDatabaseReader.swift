@@ -8,6 +8,7 @@
 import Foundation
 import CoreLocation
 
+var PushedCaches: [Cache] = []
 // Function to read CSV file and return an array of Cache objects
 func readCacheCSV() -> [Cache]? {
     let fileName = "CacheDatabase"
@@ -27,6 +28,11 @@ func readCacheCSV() -> [Cache]? {
                     }
                 }
             }
+            if !PushedCaches.isEmpty {
+                for cache in PushedCaches {
+                    csvCaches.append(cache)
+                }
+            }
             return csvCaches
         } catch {
             print("Error reading CSV file:", error)
@@ -37,3 +43,23 @@ func readCacheCSV() -> [Cache]? {
         return nil
     }
 }
+func NextID() -> String{
+    let CacheList = readCacheCSV()
+    let lastID = CacheList?.last?.serial
+    if var intID = Int(lastID!){
+        intID += 1
+        let nextID = String(format: "%04d", intID)
+        return nextID
+    }
+    else{
+        print("int cast fail")
+        return ""
+    }
+    
+}
+func WriteCache(NewCache: Cache){
+    let newID = NextID()
+    PushedCaches.append(Cache(serial: newID, name: NewCache.name, coordinate: NewCache.coordinate, question: NewCache.question, correctAnswer: NewCache.correctAnswer, answer2: NewCache.answer2, answer3: NewCache.answer3, answer4: NewCache.answer4))
+    print("pushed")
+}
+

@@ -69,7 +69,7 @@ struct CreateCache: View {
                 }
 
                 Section(header: Text("Location")) {
-                    NavigationLink(destination: SelectOnMapView(NewCache: Cache(serial: "", name: cacheName, coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0), question: Question1, correctAnswer: Q1CorrectAnswer, answer2: Q1Answer1, answer3: Q1Answer2, answer4: Q1Answer3)))
+                    NavigationLink(destination: SelectOnMapView(cachedata: Cache(serial: "", name: cacheName, coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0), question: Question1, correctAnswer: Q1CorrectAnswer, answer2: Q1Answer1, answer3: Q1Answer2, answer4: Q1Answer3)))
                     {
                         Text("Set Location")
                             .foregroundColor(.white)

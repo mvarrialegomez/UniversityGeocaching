@@ -48,7 +48,8 @@ struct SelectOnMap: UIViewRepresentable{
 }
 
 struct SelectOnMapView: View {
-    var NewCache: Cache
+    var cachedata: Cache
+    @Environment(\.presentationMode) var presentationMode
     @State private var selectedCoordinate: CLLocationCoordinate2D?
     @State private var CurrentCoordinate: CLLocationCoordinate2D?
     @StateObject private var locationManager = LocationManager()
@@ -79,7 +80,10 @@ struct SelectOnMapView: View {
                             Alert(title: Text("Create Cache at Current Location?"),
                             message: Text("This action cannot be undone."),
                                   primaryButton: .default(Text("Yes")){
-                            
+                                let newcache = Cache(serial: "", name: cachedata.name, coordinate: CLLocationCoordinate2D(latitude: CurrentCoordinate?.latitude ?? 0, longitude: CurrentCoordinate?.longitude ?? 0), question: cachedata.question, correctAnswer: cachedata.correctAnswer, answer2: cachedata.answer2, answer3: cachedata.answer3, answer4: cachedata.answer4)
+                                WriteCache(NewCache: newcache)
+                                presentationMode.wrappedValue.dismiss()
+                                presentationMode.wrappedValue.dismiss()
                             },
                                   secondaryButton: .cancel(Text("No")))
                         }
@@ -103,7 +107,10 @@ struct SelectOnMapView: View {
                             Alert(title: Text("Create Cache at Selected Location?"),
                             message: Text("This action cannot be undone."),
                                   primaryButton: .default(Text("Yes")){
-                            
+                                let newcache = Cache(serial: "", name: cachedata.name, coordinate: CLLocationCoordinate2D(latitude: selectedCoordinate?.latitude ?? 0, longitude: selectedCoordinate?.longitude ?? 0), question: cachedata.question, correctAnswer: cachedata.correctAnswer, answer2: cachedata.answer2, answer3: cachedata.answer3, answer4: cachedata.answer4)
+                                WriteCache(NewCache: newcache)
+                                presentationMode.wrappedValue.dismiss()
+                                presentationMode.wrappedValue.dismiss()
                             },
                                   secondaryButton: .cancel(Text("No")))
                         }
@@ -117,9 +124,11 @@ struct SelectOnMapView: View {
                     
                     
                 }
-            }
-        }
 
+            }
+            
+        }
+        
         .onAppear {
             locationManager.requestLocation()
         }
