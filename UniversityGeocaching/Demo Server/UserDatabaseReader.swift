@@ -55,7 +55,7 @@ func returnUserName(email:String) -> String {
     var name: String = ""
     UserList = readUserCSV() ?? []
     for user in UserList{
-        if email == user.Email {
+        if email.lowercased() == user.Email.lowercased() {
             name = user.Name
         }
     }

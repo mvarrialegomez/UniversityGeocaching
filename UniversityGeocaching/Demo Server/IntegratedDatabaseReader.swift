@@ -7,6 +7,8 @@
 
 import Foundation
 import Combine
+var UserUpdates: [(String, String)] = []
+var AddedCaches: [String] = []
 
 func readUserDataCSV() -> [UserData] {
     var userDataList: [UserData] = []
@@ -30,12 +32,33 @@ func readUserDataCSV() -> [UserData] {
                             cacheCompletions.append(cacheData)
                         }
                     }
+                    if !AddedCaches.isEmpty{
+                        for cache in AddedCaches {
+                            print("updated new cache")
+                            let cacheData = (cache, false)
+                            cacheCompletions.append(cacheData)
+                        }
+                    }
                 }
                 
                 let userData = UserData()
                 userData.userEmail = email
                 userData.userCaches = cacheCompletions
                 userDataList.append(userData)
+            }
+            if !UserUpdates.isEmpty{
+                for update in UserUpdates{
+                    for userData in userDataList{
+                        if update.0 == userData.userEmail{
+                            for i in 0..<userData.userCaches.count {
+                                if update.1 == userData.userCaches[i].0{
+                                    userData.userCaches.remove(at: i)
+                                    userData.userCaches.append((update.1, true))
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }catch {
             print("Error reading CSV file: \(error)")
@@ -55,22 +78,20 @@ func getUserStats(email: String) -> [Cache] {
     
     for data in userDataList{
         print(email)
-        if email == data.userEmail {
+        if email.lowercased() == data.userEmail.lowercased() {
             userCacheData = data.userCaches
             print(userCacheData)
             break
         }
     }
-    var index:Int = 0
     for cacheBool in userCacheData{
-        if let allCaches = allCaches, index < allCaches.count {
-            let cacheSerial = allCaches[index].serial
-            print(cacheBool.0, cacheBool.1)
-            if cacheBool.0 == cacheSerial && cacheBool.1 {
-                completedCaches.append(allCaches[index])
+        print(cacheBool)
+        for i in 0..<allCaches!.count{
+            if allCaches![i].serial == cacheBool.0 && cacheBool.1{
+                completedCaches.append(allCaches![i])
+                print("Found completed Cache")
             }
         }
-        index+=1
     }
     return completedCaches
 }
@@ -88,3 +109,7 @@ func getCacheStatus(cacheID: String) -> [String] {
         print(usersCompleted)
         return usersCompleted
     }
+
+func addCache(cacheID: String){
+    AddedCaches.append(cacheID)
+}

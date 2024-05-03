@@ -61,5 +61,6 @@ func WriteCache(NewCache: Cache){
     let newID = NextID()
     PushedCaches.append(Cache(serial: newID, name: NewCache.name, coordinate: NewCache.coordinate, question: NewCache.question, correctAnswer: NewCache.correctAnswer, answer2: NewCache.answer2, answer3: NewCache.answer3, answer4: NewCache.answer4))
     print("pushed")
+    addCache(cacheID: newID)
 }
 
