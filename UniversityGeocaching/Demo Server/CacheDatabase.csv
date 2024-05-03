@@ -1,5 +1,5 @@
 ID,Name,Latitude,Longitude,Question,CorrectAnswer,Answer2,Answer3,Answer4
-0001,USD Torero Store,032.772364,-117.187653, question 1, answer1, answer2, answer3, answer4
-0002,Student Life Pavilion,032.772343,-117.187089, question 2, answer1, answer2, answer3, answer4
-0003,Warren Hall,032.771545,-117.188835, question 3, answer1, answer2, answer3, answer4
-0004,Copley Library,032.771443,-117.193470, question 4, answer1, answer2, answer3, answer4
+0001,USD Torero Store,032.772364,-117.187653, Which form of payment can you use here?, Campus Cash, Dining Dollars, Torero Points, President Harris' ID'
+0002,Student Life Pavilion,032.772343,-117.187089, Which of these is not a lunch station?, Italian, Mediterranean, Burger, Pizza
+0003,Warren Hall,032.771545,-117.188835, Which students have class here?, Law, Nursing, Engineering, Philosophy
+0004,Copley Library,032.771443,-117.193470, What is the most popular room in the library known as?, Harry Potter Room, Lord of the Rings Cave, President Harris' Dungeon', Hunger Games Study Arena

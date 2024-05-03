@@ -102,7 +102,7 @@ struct NavigationScreenView: View {
             .navigationTitle("Map")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(item: $selectedCache) { cache in
-                CacheQuestionsPageView(question: cache.question, correctAnswer: cache.correctAnswer, answer2: cache.answer2, answer3: cache.answer3, answer4: cache.answer4)
+                CacheQuestionsPageView(cacheName: cache.name, question: cache.question, correctAnswer: cache.correctAnswer, answer2: cache.answer2, answer3: cache.answer3, answer4: cache.answer4)
             }
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("You're Too Far!").foregroundColor(.red), message: Text("Get within 100m of the cache."), dismissButton: .default(Text("OK")))
