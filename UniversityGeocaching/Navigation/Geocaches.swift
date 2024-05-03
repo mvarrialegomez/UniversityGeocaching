@@ -45,7 +45,7 @@ struct Geocaches: View {
                 .bold()
                 .padding(.bottom, 2)
             
-            Text("Caches will become available when you are within 10m of the cache")
+            Text("Caches will become available when you are within 100m of the cache")
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
