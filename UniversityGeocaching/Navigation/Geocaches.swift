@@ -53,7 +53,7 @@ struct Geocaches: View {
             List(sortCachesByDistance(), id: \.name) { cache in
                 if let distance = distance(from: cache.coordinate) {
                     if distance <= 100 {
-                        // Navigate to the next page only if the user is 10 meters or less away from the cache
+                        // Navigate to the next page only if the user is 100 meters or less away from the cache
                         VStack(alignment: .leading) {
                             NavigationLink(destination: CacheQuestionsPageView(question: cache.question, correctAnswer: cache.correctAnswer, answer2: cache.answer2, answer3: cache.answer3, answer4: cache.answer4)) {
                                 VStack(alignment: .leading) {

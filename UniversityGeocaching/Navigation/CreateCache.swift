@@ -22,6 +22,7 @@ struct CreateCache: View {
             Text("Create New Cache")
                 .font(.largeTitle)
                 .padding()
+                .bold()
 
             List {
                 Section(header: Text("Cache Details")) {
