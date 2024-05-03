@@ -79,7 +79,7 @@ struct CreateCache: View {
                             .cornerRadius(10)
                     }
                 }
-                /* Add if you have time, must impliment image upload code
+                /* Add if you have time, must implement image upload code
                 Section(header: Text("Image")) {
                     
                 }
