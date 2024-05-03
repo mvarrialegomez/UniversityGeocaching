@@ -38,7 +38,7 @@ func VerifyUser(email: String, password: String, access: Bool) -> Bool {
     var UserList: [User] = []
     UserList = readUserCSV() ?? []
     for user in UserList{
-        if email == user.Email {
+        if email.lowercased() == user.Email.lowercased() {
             if password == user.Password{
                 return true
             }

@@ -48,9 +48,12 @@ struct SelectOnMap: UIViewRepresentable{
 }
 
 struct SelectOnMapView: View {
+    var NewCache: Cache
     @State private var selectedCoordinate: CLLocationCoordinate2D?
     @State private var CurrentCoordinate: CLLocationCoordinate2D?
     @StateObject private var locationManager = LocationManager()
+    @State private var ConfirmationC = false
+    @State private var ConfirmationS = false
     
     var body: some View {
         ZStack{
@@ -65,11 +68,20 @@ struct SelectOnMapView: View {
                         Button(action: {
                             locationManager.requestLocation()
                             print("Current Coordinate: \(CurrentCoordinate?.latitude ?? 0), \(CurrentCoordinate?.longitude ?? 0)")
+                            ConfirmationC = true
                         }) {
                             Text("Current Location")
                                 .foregroundColor(.white)
                                 .background(Color.blue)
                                 .font(.system(size: 15))
+                        }
+                        .alert(isPresented: $ConfirmationC){
+                            Alert(title: Text("Create Cache at Current Location?"),
+                            message: Text("This action cannot be undone."),
+                                  primaryButton: .default(Text("Yes")){
+                            
+                            },
+                                  secondaryButton: .cancel(Text("No")))
                         }
                     }
                     .frame(height: 50)
@@ -80,11 +92,20 @@ struct SelectOnMapView: View {
                     HStack{
                         Button(action: {
                             print("Selected Coordinate: \(selectedCoordinate?.latitude ?? 0), \(selectedCoordinate?.longitude ?? 0)")
+                            ConfirmationS = true
                         }) {
                             Text("Selected Location")
                                 .foregroundColor(.white)
                                 .background(Color.blue)
                                 .font(.system(size: 15))
+                        }
+                        .alert(isPresented: $ConfirmationS){
+                            Alert(title: Text("Create Cache at Selected Location?"),
+                            message: Text("This action cannot be undone."),
+                                  primaryButton: .default(Text("Yes")){
+                            
+                            },
+                                  secondaryButton: .cancel(Text("No")))
                         }
                     }
                     .frame(height: 50)
@@ -98,6 +119,7 @@ struct SelectOnMapView: View {
                 }
             }
         }
+
         .onAppear {
             locationManager.requestLocation()
         }

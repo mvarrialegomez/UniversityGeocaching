@@ -15,6 +15,19 @@ struct User: Identifiable {
     var Name: String
 }
 
+struct LogOutButton: View {
+    @Environment(\.presentationMode) var presentationMode
+    var body: some View {
+        Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }) {
+            HStack{
+                Text("Log Out")
+            }
+        }
+    }
+}
+
 struct SignIn: View {
     
     @State var name: String = ""
@@ -76,7 +89,8 @@ struct SignIn: View {
                 
                 VStack{
                     HStack{
-                        NavigationLink(destination: ContentView(), isActive: $isSignedIn) {
+                        NavigationLink(destination: ContentView().navigationBarBackButtonHidden()
+                            .navigationBarItems(leading: LogOutButton().foregroundColor(.white)), isActive: $isSignedIn) {
                             EmptyView()
                         }
                         
@@ -106,7 +120,8 @@ struct SignIn: View {
                             .padding()
                         }
                         
-                        NavigationLink(destination: AdminView().navigationBarBackButtonHidden()){
+                        NavigationLink(destination: AdminView().navigationBarBackButtonHidden()
+                            .navigationBarItems(leading: LogOutButton())){
                             HStack{
                                 Image(systemName: "checkmark.circle")
                                     .foregroundColor(.white)

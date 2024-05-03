@@ -16,30 +16,7 @@ struct CreateCache: View {
     @State private var Q1Answer1: String = ""
     @State private var Q1Answer2: String = ""
     @State private var Q1Answer3: String = ""
-    @State private var Question2: String = ""
-    @State private var Q2CorrectAnswer: String = ""
-    @State private var Q2Answer1: String = ""
-    @State private var Q2Answer2: String = ""
-    @State private var Q2Answer3: String = ""
-    @State private var Question3: String = ""
-    @State private var Q3CorrectAnswer: String = ""
-    @State private var Q3Answer1: String = ""
-    @State private var Q3Answer2: String = ""
-    @State private var Q3Answer3: String = ""
-
-    private let manager = CLLocationManager()
-    private var cacheCoordinates: String = "0.0, 0.0"
-
-    func validate(cacheName: String) -> Bool {
-        return true //accepts any value at the moment
-    }
-
-    func getCurrentCoordinates() -> String {
-        manager.requestLocation()//uses the users current location
-        //add in a function where they can input coordinates of their choosing
-        return "0.0,0.0" //automatically returns these coordinates
-    }
-
+    
     var body: some View {
         VStack(spacing: 20) {
             Text("Create New Cache")
@@ -88,80 +65,10 @@ struct CreateCache: View {
                             TextField("Incorrect answer", text: $Q1Answer3)
                         }
                     }
-                    HStack {
-                        Text("Question 2:")
-                        Spacer()
-                        ScrollView(.horizontal, showsIndicators: false){
-                            TextField("Enter question", text: $Question2)
-                        }
-                    }
-                    HStack {
-                        Text("Correct Answer:").padding(.leading, 25)
-                        Spacer()
-                        ScrollView(.horizontal, showsIndicators: false){
-                            TextField("Correct answer", text: $Q2CorrectAnswer)
-                        }
-                    }
-                    HStack {
-                        Text("Incorrect Answer:").padding(.leading, 25)
-                        Spacer()
-                        ScrollView(.horizontal, showsIndicators: false){
-                            TextField("Incorrect answer", text: $Q2Answer1)
-                        }
-                    }
-                    HStack {
-                        Text("Incorrect Answer:").padding(.leading, 25)
-                        Spacer()
-                        ScrollView(.horizontal, showsIndicators: false){
-                            TextField("Incorrect answer", text: $Q2Answer2)
-                        }
-                    }
-                    HStack {
-                        Text("Incorrect Answer:").padding(.leading, 25)
-                        Spacer()
-                        ScrollView(.horizontal, showsIndicators: false){
-                            TextField("Incorrect answer", text: $Q2Answer3)
-                        }
-                    }
-                    HStack {
-                        Text("Question 3:")
-                        Spacer()
-                        ScrollView(.horizontal, showsIndicators: false){
-                            TextField("Enter question", text: $Question3)
-                        }
-                    }
-                    HStack {
-                        Text("Correct Answer:").padding(.leading, 25)
-                        Spacer()
-                        ScrollView(.horizontal, showsIndicators: false){
-                            TextField("Correct answer", text: $Q3CorrectAnswer)
-                        }
-                    }
-                    HStack {
-                        Text("Incorrect Answer:").padding(.leading, 25)
-                        Spacer()
-                        ScrollView(.horizontal, showsIndicators: false){
-                            TextField("Incorrect answer", text: $Q3Answer1)
-                        }
-                    }
-                    HStack {
-                        Text("Incorrect Answer:").padding(.leading, 25)
-                        Spacer()
-                        ScrollView(.horizontal, showsIndicators: false){
-                            TextField("Incorrect answer", text: $Q3Answer2)
-                        }
-                    }
-                    HStack {
-                        Text("Incorrect Answer:").padding(.leading, 25)
-                        Spacer()
-                        ScrollView(.horizontal, showsIndicators: false){
-                            TextField("Incorrect answer", text: $Q3Answer3)
-                        }
-                    }
                 }
 
                 Section(header: Text("Location")) {
-                    NavigationLink(destination: SelectOnMapView())
+                    NavigationLink(destination: SelectOnMapView(NewCache: Cache(serial: "", name: cacheName, coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0), question: Question1, correctAnswer: Q1CorrectAnswer, answer2: Q1Answer1, answer3: Q1Answer2, answer4: Q1Answer3)))
                     {
                         Text("Set Location")
                             .foregroundColor(.white)
