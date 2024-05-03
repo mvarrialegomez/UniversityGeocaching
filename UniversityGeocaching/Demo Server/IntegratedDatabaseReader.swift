@@ -78,15 +78,12 @@ func getUserStats(email: String) -> [Cache] {
 func getCacheStatus(cacheID: String) -> [String] {
     var usersCompleted: [String] = []
     let userDataList = readUserDataCSV()
-        print(userDataList)
         for user in userDataList {
             for cache in user.userCaches{
-                print(cache.0, cacheID)
                 if cache.0 == cacheID && cache.1 {
                     usersCompleted.append(returnUserName(email: user.userEmail))
                 }
             }
         }
-        print(cacheID, usersCompleted)
         return usersCompleted
     }
