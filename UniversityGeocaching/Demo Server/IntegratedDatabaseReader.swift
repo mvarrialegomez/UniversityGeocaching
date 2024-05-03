@@ -85,5 +85,6 @@ func getCacheStatus(cacheID: String) -> [String] {
                 }
             }
         }
+        print(usersCompleted)
         return usersCompleted
     }

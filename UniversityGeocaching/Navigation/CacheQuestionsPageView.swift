@@ -16,6 +16,7 @@ func shuffle<T>(_ array: inout [T]) {
 }
 
 struct CacheQuestionsPageView: View {
+    let cacheName: String
     let question: String
     let correctAnswer: String
     let answer2: String
@@ -25,7 +26,8 @@ struct CacheQuestionsPageView: View {
     @State private var backgroundColors: [Color]
     @State private var options: [String] = [] // Initialize options with default values
 
-    init(question: String, correctAnswer: String, answer2: String, answer3: String, answer4: String) {
+    init(cacheName: String, question: String, correctAnswer: String, answer2: String, answer3: String, answer4: String) {
+        self.cacheName = cacheName
         self.question = question
         self.correctAnswer = correctAnswer
         self.answer2 = answer2
@@ -42,11 +44,16 @@ struct CacheQuestionsPageView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text(question)
+            Text(cacheName)
                 .font(.system(size: 30))
                 .bold()
                 .padding(.horizontal)
                 .padding(.top, 5)
+                .foregroundColor(.blue)
+            Text(question)
+                .font(.system(size: 25))
+                .bold()
+                .padding(.horizontal)
 
             ForEach(options.indices, id: \.self) { index in
                 Button(action: {
@@ -57,12 +64,17 @@ struct CacheQuestionsPageView: View {
                     }
                 }) {
                     Text(options[index])
-                        .font(.headline)
+                        .font(.system(size: 20))
                         .foregroundColor(.primary)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(backgroundColors[index])
                         .cornerRadius(10)
-                        .padding()
+                        .padding(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.blue, lineWidth: 2)
+                        )
+                        .padding(.horizontal, 10)
                 }
             }
         }
@@ -77,6 +89,6 @@ struct CacheQuestionsPageView: View {
 
 struct CacheQuestionsPageView_Previews: PreviewProvider {
     static var previews: some View {
-        CacheQuestionsPageView(question: "What is your favorite color?", correctAnswer: "Red", answer2: "Blue", answer3: "Green", answer4: "Yellow")
+        CacheQuestionsPageView(cacheName: "sample", question: "What is your favorite color?", correctAnswer: "Red", answer2: "Blue", answer3: "Green", answer4: "Yellow")
     }
 }
