@@ -55,79 +55,75 @@ struct SelectOnMapView: View {
     @StateObject private var locationManager = LocationManager()
     @State private var ConfirmationC = false
     @State private var ConfirmationS = false
+    @Binding var isShowingMap: Bool
     
     var body: some View {
-        ZStack{
-            SelectOnMap(selectedCoordinate: $selectedCoordinate)
-                .edgesIgnoringSafeArea(.all)
-            VStack{
-                //Text("Selected Coordinate: \(selectedCoordinate?.latitude ?? 0), \(selectedCoordinate?.longitude ?? 0)")
-                Spacer()
-                HStack {
-                    // Button to show user's current location
-                    HStack{
-                        Button(action: {
-                            locationManager.requestLocation()
-                            print("Current Coordinate: \(CurrentCoordinate?.latitude ?? 0), \(CurrentCoordinate?.longitude ?? 0)")
-                            ConfirmationC = true
-                        }) {
-                            Text("Current Location")
-                                .foregroundColor(.white)
-                                .background(Color.blue)
-                                .font(.system(size: 15))
+            ZStack{
+                SelectOnMap(selectedCoordinate: $selectedCoordinate)
+                    .edgesIgnoringSafeArea(.all)
+                VStack{
+                    //Text("Selected Coordinate: \(selectedCoordinate?.latitude ?? 0), \(selectedCoordinate?.longitude ?? 0)")
+                    Spacer()
+                    HStack {
+                        // Button to show user's current location
+                        HStack{
+                            Button(action: {
+                                locationManager.requestLocation()
+                                print("Current Coordinate: \(CurrentCoordinate?.latitude ?? 0), \(CurrentCoordinate?.longitude ?? 0)")
+                                ConfirmationC = true
+                            }) {
+                                Text("Current Location")
+                                    .foregroundColor(.white)
+                                    .background(Color.blue)
+                                    .font(.system(size: 15))
+                            }
+                            .alert(isPresented: $ConfirmationC){
+                                Alert(title: Text("Create Cache at Current Location?"),
+                                      message: Text("This action cannot be undone."),
+                                      primaryButton: .default(Text("Yes")){
+                                        let newcache = Cache(serial: "", name: cachedata.name, coordinate: CLLocationCoordinate2D(latitude: CurrentCoordinate?.latitude ?? 0, longitude: CurrentCoordinate?.longitude ?? 0), question: cachedata.question, correctAnswer: cachedata.correctAnswer, answer2: cachedata.answer2, answer3: cachedata.answer3, answer4: cachedata.answer4)
+                                        WriteCache(NewCache: newcache)
+                                        presentationMode.wrappedValue.dismiss()
+                                        isShowingMap = false // Set the flag to switch to the other page
+                                      },
+                                      secondaryButton: .cancel(Text("No")))
+                            }
                         }
-                        .alert(isPresented: $ConfirmationC){
-                            Alert(title: Text("Create Cache at Current Location?"),
-                            message: Text("This action cannot be undone."),
-                                  primaryButton: .default(Text("Yes")){
-                                let newcache = Cache(serial: "", name: cachedata.name, coordinate: CLLocationCoordinate2D(latitude: CurrentCoordinate?.latitude ?? 0, longitude: CurrentCoordinate?.longitude ?? 0), question: cachedata.question, correctAnswer: cachedata.correctAnswer, answer2: cachedata.answer2, answer3: cachedata.answer3, answer4: cachedata.answer4)
-                                WriteCache(NewCache: newcache)
-                                presentationMode.wrappedValue.dismiss()
-                                presentationMode.wrappedValue.dismiss()
-                            },
-                                  secondaryButton: .cancel(Text("No")))
+                        .frame(height: 50)
+                        .frame(maxWidth: .infinity) // how to make a button fill all the space available horizontally
+                        .background(Color.blue)
+                        .cornerRadius(20)
+                        .padding()
+                        HStack{
+                            Button(action: {
+                                print("Selected Coordinate: \(selectedCoordinate?.latitude ?? 0), \(selectedCoordinate?.longitude ?? 0)")
+                                ConfirmationS = true
+                            }) {
+                                Text("Selected Location")
+                                    .foregroundColor(.white)
+                                    .background(Color.blue)
+                                    .font(.system(size: 15))
+                            }
+                            .alert(isPresented: $ConfirmationS){
+                                Alert(title: Text("Create Cache at Selected Location?"),
+                                      message: Text("This action cannot be undone."),
+                                      primaryButton: .default(Text("Yes")){
+                                        let newcache = Cache(serial: "", name: cachedata.name, coordinate: CLLocationCoordinate2D(latitude: selectedCoordinate?.latitude ?? 0, longitude: selectedCoordinate?.longitude ?? 0), question: cachedata.question, correctAnswer: cachedata.correctAnswer, answer2: cachedata.answer2, answer3: cachedata.answer3, answer4: cachedata.answer4)
+                                        WriteCache(NewCache: newcache)
+                                        presentationMode.wrappedValue.dismiss()
+                                        isShowingMap = false // Set the flag to switch to the other page
+                                      },
+                                      secondaryButton: .cancel(Text("No")))
+                            }
                         }
+                        .frame(height: 50)
+                        .frame(maxWidth: .infinity) // how to make a button fill all the space available horizontally
+                        .background(Color.blue)
+                        .cornerRadius(20)
+                        .padding()
                     }
-                    .frame(height: 50)
-                    .frame(maxWidth: .infinity) // how to make a button fill all the space available horizontally
-                    .background(Color.blue)
-                    .cornerRadius(20)
-                    .padding()
-                    HStack{
-                        Button(action: {
-                            print("Selected Coordinate: \(selectedCoordinate?.latitude ?? 0), \(selectedCoordinate?.longitude ?? 0)")
-                            ConfirmationS = true
-                        }) {
-                            Text("Selected Location")
-                                .foregroundColor(.white)
-                                .background(Color.blue)
-                                .font(.system(size: 15))
-                        }
-                        .alert(isPresented: $ConfirmationS){
-                            Alert(title: Text("Create Cache at Selected Location?"),
-                            message: Text("This action cannot be undone."),
-                                  primaryButton: .default(Text("Yes")){
-                                let newcache = Cache(serial: "", name: cachedata.name, coordinate: CLLocationCoordinate2D(latitude: selectedCoordinate?.latitude ?? 0, longitude: selectedCoordinate?.longitude ?? 0), question: cachedata.question, correctAnswer: cachedata.correctAnswer, answer2: cachedata.answer2, answer3: cachedata.answer3, answer4: cachedata.answer4)
-                                WriteCache(NewCache: newcache)
-                                presentationMode.wrappedValue.dismiss()
-                                presentationMode.wrappedValue.dismiss()
-                            },
-                                  secondaryButton: .cancel(Text("No")))
-                        }
-                    }
-                    .frame(height: 50)
-                    .frame(maxWidth: .infinity) // how to make a button fill all the space available horizontally
-                    .background(Color.blue)
-                    .cornerRadius(20)
-                    .padding()
-                    
-                    
-                    
                 }
-
             }
-            
-        }
         
         .onAppear {
             locationManager.requestLocation()
@@ -163,6 +159,34 @@ struct SelectOnMapView: View {
         }
     }
     
+}
+
+struct MainView: View {
+    var cachedata: Cache
+    @State private var isShowingMap = true
+    
+    var body: some View {
+        ZStack {
+            if isShowingMap {
+                SelectOnMapView(cachedata: cachedata, isShowingMap: $isShowingMap)
+            } else {
+                OtherPageView()
+            }
+        }
+    }
+}
+
+struct OtherPageView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
+    var body: some View {
+        VStack {
+            // Your other page content here
+            Button("Go Back") {
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
+    }
 }
 
 
