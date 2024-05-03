@@ -74,3 +74,11 @@ func getUserStats(email: String) -> [Cache] {
     }
     return completedCaches
 }
+
+func getCacheStatus(cacheName: String) -> [String] {
+    var allCaches = readCacheCSV()
+    for cache in allCaches{
+        if cache.name == cacheName{
+            
+        }
+    }

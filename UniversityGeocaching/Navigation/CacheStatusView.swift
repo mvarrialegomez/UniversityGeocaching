@@ -17,10 +17,11 @@ struct CacheStatusView: View {
                     .bold()
                 
                 Spacer()
+                var allCaches = readCacheCSV()
             
                 List {
                     Section {
-                        DisclosureGroup("USD Torero Store (3)") {
+                        DisclosureGroup((allCaches?[0].name)!) {
                             HStack(spacing: 3) {
                                 Label("Maria Varriale Gomez", systemImage: "person.circle.fill")
                             }
