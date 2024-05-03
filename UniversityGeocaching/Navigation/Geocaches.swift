@@ -8,9 +8,11 @@
 import SwiftUI
 import CoreLocation
 
+
 struct Geocaches: View {
     @StateObject private var locationManager = LocationManager()
     @State private var userLocation: CLLocation?
+    @EnvironmentObject var userData: UserData
     
     // Function to calculate distance between two coordinates
     func distance(from coordinate: CLLocationCoordinate2D) -> CLLocationDistance? {
@@ -23,7 +25,24 @@ struct Geocaches: View {
     func updateUserLocation() {
         locationManager.requestLocation()
     }
-    
+    func availableOnly() -> ([Cache],[Cache]){
+        let Claimed = getUserStats(email: userData.userEmail)
+        var ClaimedCaches: [String] = []
+        var Completed: [Cache] = []
+        var available: [Cache] = []
+        for cache in Claimed{
+            ClaimedCaches.append(cache.serial)
+        }
+        for i in 0..<availCaches!.count {
+            if ClaimedCaches.contains(availCaches![i].serial) {
+                Completed.append(availCaches![i])
+            }
+            else{
+                available.append(availCaches![i])
+            }
+        }
+        return (Completed, available)
+    }
     // Function to sort caches by distance from user location
     func sortCachesByDistance() -> [Cache] {
         guard let userLocation = userLocation else { return availCaches! }
@@ -49,7 +68,7 @@ struct Geocaches: View {
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
-            
+            //TODO: Run available only, returns tuple (completed, available). Sort available, print those first sorted by distance, then print completed
             List(sortCachesByDistance(), id: \.name) { cache in
                 if let distance = distance(from: cache.coordinate) {
                     if distance <= 100 {
@@ -70,7 +89,7 @@ struct Geocaches: View {
                             }
                         }
                     } else {
-                        // Show a disabled button if the user is more than 10 meters away
+                        // Show a disabled button if the user is more than 100 meters away
                         VStack(alignment: .leading) {
                             Button(action: {}) {
                                 VStack(alignment: .leading) {
