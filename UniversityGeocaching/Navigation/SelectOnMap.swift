@@ -55,7 +55,6 @@ struct SelectOnMapView: View {
     @StateObject private var locationManager = LocationManager()
     @State private var ConfirmationC = false
     @State private var ConfirmationS = false
-    @Binding var isShowingMap: Bool
     
     var body: some View {
             ZStack{
@@ -84,7 +83,7 @@ struct SelectOnMapView: View {
                                         let newcache = Cache(serial: "", name: cachedata.name, coordinate: CLLocationCoordinate2D(latitude: CurrentCoordinate?.latitude ?? 0, longitude: CurrentCoordinate?.longitude ?? 0), question: cachedata.question, correctAnswer: cachedata.correctAnswer, answer2: cachedata.answer2, answer3: cachedata.answer3, answer4: cachedata.answer4)
                                         WriteCache(NewCache: newcache)
                                         presentationMode.wrappedValue.dismiss()
-                                        isShowingMap = false // Set the flag to switch to the other page
+                                        presentationMode.wrappedValue.dismiss()
                                       },
                                       secondaryButton: .cancel(Text("No")))
                             }
@@ -111,7 +110,7 @@ struct SelectOnMapView: View {
                                         let newcache = Cache(serial: "", name: cachedata.name, coordinate: CLLocationCoordinate2D(latitude: selectedCoordinate?.latitude ?? 0, longitude: selectedCoordinate?.longitude ?? 0), question: cachedata.question, correctAnswer: cachedata.correctAnswer, answer2: cachedata.answer2, answer3: cachedata.answer3, answer4: cachedata.answer4)
                                         WriteCache(NewCache: newcache)
                                         presentationMode.wrappedValue.dismiss()
-                                        isShowingMap = false // Set the flag to switch to the other page
+                                    presentationMode.wrappedValue.dismiss()
                                       },
                                       secondaryButton: .cancel(Text("No")))
                             }
@@ -160,33 +159,3 @@ struct SelectOnMapView: View {
     }
     
 }
-
-struct MainView: View {
-    var cachedata: Cache
-    @State private var isShowingMap = true
-    
-    var body: some View {
-        ZStack {
-            if isShowingMap {
-                SelectOnMapView(cachedata: cachedata, isShowingMap: $isShowingMap)
-            } else {
-                OtherPageView()
-            }
-        }
-    }
-}
-
-struct OtherPageView: View {
-    @Environment(\.presentationMode) var presentationMode
-    
-    var body: some View {
-        VStack {
-            // Your other page content here
-            Button("Go Back") {
-                presentationMode.wrappedValue.dismiss()
-            }
-        }
-    }
-}
-
-

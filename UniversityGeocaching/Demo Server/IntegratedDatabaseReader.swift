@@ -7,8 +7,8 @@
 
 import Foundation
 import Combine
-var UserUpdates: [(String, String)] = []
-var AddedCaches: [String] = []
+var UserUpdates: [(String, String)] = [] //stores (email, serial of cache)
+var AddedCaches: [String] = [] //stores serial of cache
 
 func readUserDataCSV() -> [UserData] {
     var userDataList: [UserData] = []
@@ -49,13 +49,14 @@ func readUserDataCSV() -> [UserData] {
             if !UserUpdates.isEmpty{
                 for update in UserUpdates{
                     for userData in userDataList{
-                        if update.0 == userData.userEmail{
+                        if update.0.lowercased() == userData.userEmail.lowercased(){
                             for i in 0..<userData.userCaches.count {
                                 if update.1 == userData.userCaches[i].0{
                                     userData.userCaches.remove(at: i)
                                     userData.userCaches.append((update.1, true))
                                 }
                             }
+                            print(userData.userCaches)
                         }
                     }
                 }
@@ -112,4 +113,31 @@ func getCacheStatus(cacheID: String) -> [String] {
 
 func addCache(cacheID: String){
     AddedCaches.append(cacheID)
+}
+func CacheClaimed(email: String, cacheID: String){
+    print("Claimed")
+    UserUpdates.append((email, cacheID))
+}
+
+func CheckUserCache(email: String, cacheID: String) -> Bool{
+    let userDataList = readUserDataCSV()
+    var userCacheData:[(String,Bool)] = []
+    
+    for data in userDataList{
+        if email.lowercased() == data.userEmail.lowercased() {
+            userCacheData = data.userCaches
+            break
+        }
+    }
+    for cacheBool in userCacheData{
+        if cacheID == cacheBool.0 {
+            if cacheBool.1{
+                return true
+            }
+            else{
+                return false
+            }
+        }
+    }
+    return false
 }

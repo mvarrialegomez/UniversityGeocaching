@@ -10,6 +10,7 @@ import Foundation
 import MapKit
 import SwiftUI
 import CoreLocation
+import SystemConfiguration.CaptiveNetwork
 
 struct Cache: Identifiable {
     var id = UUID()
@@ -24,7 +25,7 @@ struct Cache: Identifiable {
 }
 
 struct NavigationScreenView: View {
-    
+    @EnvironmentObject var userData: UserData
     @StateObject private var locationManager = LocationManager()
     
     @State var region = MKCoordinateRegion(
@@ -32,7 +33,7 @@ struct NavigationScreenView: View {
         span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
     )
     
-    @State var showingUserLocation = false
+    @State var showingUserLocation = true
     
     // Replace caches list with @State variable
     @State var caches = readCacheCSV()
@@ -46,18 +47,19 @@ struct NavigationScreenView: View {
                 // Map tab
                 ZStack {
                     Map(coordinateRegion: $region, showsUserLocation: showingUserLocation, annotationItems: caches!) { cache in
-                        MapAnnotation(coordinate: cache.coordinate) {
-                            Image("cachePin.fill")
-                                .foregroundColor(.blue)
-                                .imageScale(.large)
-                                .onTapGesture {
-                                    if let userLocation = locationManager.location, userLocation.distance(from: CLLocation(latitude: cache.coordinate.latitude, longitude: cache.coordinate.longitude)) <= 100 {
-                                        selectedCache = cache
-                                    } else {
-                                        showAlert = true
+                        
+                            MapAnnotation(coordinate: cache.coordinate) {
+                                Image("cachePin.fill")
+                                    .foregroundColor(.blue)
+                                    .imageScale(.large)
+                                    .onTapGesture {
+                                        if let userLocation = locationManager.location, userLocation.distance(from: CLLocation(latitude: cache.coordinate.latitude, longitude: cache.coordinate.longitude)) <= 100 {
+                                            selectedCache = cache
+                                        } else {
+                                            showAlert = true
+                                        }
                                     }
-                                }
-                        }
+                            }
                     }
                     
                     VStack {
@@ -66,12 +68,17 @@ struct NavigationScreenView: View {
                             Spacer()
                             // Button to show user's current location
                             Button(action: {
-                                showingUserLocation = true
                                 locationManager.requestLocation()
+                                if let bssid = getBSSID() {
+                                    print("BSSID: \(bssid)")
+                                }
+                                else{
+                                    print("Not Connected to a WI-FI Network")
+                                }
                             }) {
                                 Image(systemName: "location.circle.fill")
                                     .foregroundColor(.blue)
-                                    .font(.system(size: 32))
+                                    .font(.system(size: 35))
                                     .padding(.top, 10)
                                     .padding(.leading, 20)
                                     .padding(.bottom, 80)
@@ -88,7 +95,7 @@ struct NavigationScreenView: View {
                     if let location = location {
                         region = MKCoordinateRegion(
                             center: location.coordinate,
-                            span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                            span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
                         )
                         print(location.coordinate)
                     }
@@ -102,13 +109,29 @@ struct NavigationScreenView: View {
             .navigationTitle("Map")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(item: $selectedCache) { cache in
-                CacheQuestionsPageView(cacheName: cache.name, question: cache.question, correctAnswer: cache.correctAnswer, answer2: cache.answer2, answer3: cache.answer3, answer4: cache.answer4)
+                CacheQuestionsPageView(cacheSerial: cache.serial, cacheName: cache.name, question: cache.question, correctAnswer: cache.correctAnswer, answer2: cache.answer2, answer3: cache.answer3, answer4: cache.answer4)
             }
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("You're Too Far!").foregroundColor(.red), message: Text("Get within 100m of the cache."), dismissButton: .default(Text("OK")))
                         }
         }
     }
+    
+    func getBSSID() -> String? {
+        guard let interfaces = CNCopySupportedInterfaces() as? [String] else {
+            return nil
+        }
+        for interface in interfaces {
+            guard let info = CNCopyCurrentNetworkInfo(interface as CFString) as NSDictionary? else{
+                continue
+            }
+            if let bssid = info[kCNNetworkInfoKeyBSSID as String] as? String{
+                return bssid
+            }
+        }
+        return nil
+    }
+    
     
     class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         private let locationManager = CLLocationManager()
@@ -143,8 +166,3 @@ struct DetailView: View {
     }
 }
 
-struct NavigationScreenView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationScreenView()
-    }
-}

@@ -16,6 +16,7 @@ func shuffle<T>(_ array: inout [T]) {
 }
 
 struct CacheQuestionsPageView: View {
+    let cacheSerial: String
     let cacheName: String
     let question: String
     let correctAnswer: String
@@ -23,10 +24,14 @@ struct CacheQuestionsPageView: View {
     let answer3: String
     let answer4: String
     @State private var selectedOptionIndex: Int?
+    @EnvironmentObject var userData: UserData
+    @Environment(\.presentationMode) var presentationMode
+    @State private var Correct = false
     @State private var backgroundColors: [Color]
     @State private var options: [String] = [] // Initialize options with default values
 
-    init(cacheName: String, question: String, correctAnswer: String, answer2: String, answer3: String, answer4: String) {
+    init(cacheSerial: String, cacheName: String, question: String, correctAnswer: String, answer2: String, answer3: String, answer4: String) {
+        self.cacheSerial = cacheSerial
         self.cacheName = cacheName
         self.question = question
         self.correctAnswer = correctAnswer
@@ -66,6 +71,12 @@ struct CacheQuestionsPageView: View {
                     if options[index] != correctAnswer {
                         vibrate() // Vibrate if incorrect answer is chosen
                     }
+                    else{
+                        //place congradulation screen here
+                        CacheClaimed(email: userData.userEmail, cacheID: cacheSerial)
+                        Correct = true
+                        //presentationMode.wrappedValue.dismiss()
+                    }
                 }) {
                     Text(options[index])
                         .font(.system(size: 20))
@@ -80,6 +91,12 @@ struct CacheQuestionsPageView: View {
                         )
                         .padding(.horizontal, 10)
                 }
+                .alert(isPresented: $Correct){
+                    Alert(title: Text("Well Done!"), dismissButton: .default(Text("Claim Cache")){
+                        presentationMode.wrappedValue.dismiss()
+                        presentationMode.wrappedValue.dismiss()
+                    })
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -93,6 +110,6 @@ struct CacheQuestionsPageView: View {
 
 struct CacheQuestionsPageView_Previews: PreviewProvider {
     static var previews: some View {
-        CacheQuestionsPageView(cacheName: "sample", question: "What is your favorite color?", correctAnswer: "Red", answer2: "Blue", answer3: "Green", answer4: "Yellow")
+        CacheQuestionsPageView(cacheSerial: "0000", cacheName: "sample", question: "What is your favorite color?", correctAnswer: "Red", answer2: "Blue", answer3: "Green", answer4: "Yellow")
     }
 }

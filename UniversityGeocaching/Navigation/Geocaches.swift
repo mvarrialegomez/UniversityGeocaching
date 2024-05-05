@@ -13,6 +13,9 @@ struct Geocaches: View {
     @StateObject private var locationManager = LocationManager()
     @State private var userLocation: CLLocation?
     @EnvironmentObject var userData: UserData
+    @State private var Completed: [Cache] = []
+    @State private var Available: [Cache] = []
+    @State private var refreshList = false
     
     // Function to calculate distance between two coordinates
     func distance(from coordinate: CLLocationCoordinate2D) -> CLLocationDistance? {
@@ -22,14 +25,13 @@ struct Geocaches: View {
     }
         
     // Function to update user's current location
-    func updateUserLocation() {
+    func updateUserLocation(){
         locationManager.requestLocation()
     }
-    func availableOnly() -> ([Cache],[Cache]){
+    func availableOnly(){
+        let availCaches = readCacheCSV()
         let Claimed = getUserStats(email: userData.userEmail)
         var ClaimedCaches: [String] = []
-        var Completed: [Cache] = []
-        var available: [Cache] = []
         for cache in Claimed{
             ClaimedCaches.append(cache.serial)
         }
@@ -38,15 +40,14 @@ struct Geocaches: View {
                 Completed.append(availCaches![i])
             }
             else{
-                available.append(availCaches![i])
+                Available.append(availCaches![i])
             }
         }
-        return (Completed, available)
     }
     // Function to sort caches by distance from user location
     func sortCachesByDistance() -> [Cache] {
-        guard let userLocation = userLocation else { return availCaches! }
-        return (availCaches!.sorted { cache1, cache2 in
+        guard let userLocation = userLocation else { return Available }
+        return (Available.sorted { cache1, cache2 in
             guard let distance1 = distance(from: cache1.coordinate),
                   let distance2 = distance(from: cache2.coordinate) else {
                 return false
@@ -54,8 +55,6 @@ struct Geocaches: View {
             return distance1 < distance2
         })
     }
-    
-    let availCaches = readCacheCSV()
     
     var body: some View {
         VStack {
@@ -69,27 +68,47 @@ struct Geocaches: View {
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
             //TODO: Run available only, returns tuple (completed, available). Sort available, print those first sorted by distance, then print completed
-            List(sortCachesByDistance(), id: \.name) { cache in
-                if let distance = distance(from: cache.coordinate) {
-                    if distance <= 100 {
-                        // Navigate to the next page only if the user is 100 meters or less away from the cache
-                        VStack(alignment: .leading) {
-                            NavigationLink(destination: CacheQuestionsPageView(cacheName: cache.name, question: cache.question, correctAnswer: cache.correctAnswer, answer2: cache.answer2, answer3: cache.answer3, answer4: cache.answer4)) {
-                                VStack(alignment: .leading) {
-                                    Text(cache.name)
-                                        .font(.headline)
-                                    Text("Coordinates: \(cache.coordinate.latitude), \(cache.coordinate.longitude)")
-                                        .font(.footnote)
-                                        .foregroundColor(.secondary)
-                                        .padding(.bottom, 2)
-                                    Text(String(format: "%.2f meters away", distance))
-                                        .font(.subheadline)
-                                        .foregroundColor(.gray)
+            List{
+                ForEach(sortCachesByDistance(), id: \.name) { cache in
+                    if let distance = distance(from: cache.coordinate) {
+                        if distance <= 100 {
+                            // Navigate to the next page only if the user is 100 meters or less away from the cache
+                            VStack(alignment: .leading) {
+                                NavigationLink(destination: CacheQuestionsPageView(cacheSerial: cache.serial, cacheName: cache.name, question: cache.question, correctAnswer: cache.correctAnswer, answer2: cache.answer2, answer3: cache.answer3, answer4: cache.answer4)) {
+                                    VStack(alignment: .leading) {
+                                        Text(cache.name)
+                                            .font(.headline)
+                                        Text("Coordinates: \(cache.coordinate.latitude), \(cache.coordinate.longitude)")
+                                            .font(.footnote)
+                                            .foregroundColor(.secondary)
+                                            .padding(.bottom, 2)
+                                        Text(String(format: "%.2f meters away", distance))
+                                            .font(.subheadline)
+                                            .foregroundColor(.gray)
+                                    }
                                 }
+                            }
+                        } else {
+                            // Show a disabled button if the user is more than 100 meters away
+                            VStack(alignment: .leading) {
+                                Button(action: {}) {
+                                    VStack(alignment: .leading) {
+                                        Text(cache.name)
+                                            .font(.headline)
+                                        Text("Coordinates: \(cache.coordinate.latitude), \(cache.coordinate.longitude)")
+                                            .font(.footnote)
+                                            .foregroundColor(.secondary)
+                                            .padding(.bottom, 2)
+                                        Text(String(format: "%.2f meters away", distance))
+                                            .font(.subheadline)
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                                .disabled(true)
                             }
                         }
                     } else {
-                        // Show a disabled button if the user is more than 100 meters away
+                        // Show a disabled button if the distance is unknown
                         VStack(alignment: .leading) {
                             Button(action: {}) {
                                 VStack(alignment: .leading) {
@@ -99,7 +118,7 @@ struct Geocaches: View {
                                         .font(.footnote)
                                         .foregroundColor(.secondary)
                                         .padding(.bottom, 2)
-                                    Text(String(format: "%.2f meters away", distance))
+                                    Text("Distance unknown")
                                         .font(.subheadline)
                                         .foregroundColor(.gray)
                                 }
@@ -107,8 +126,8 @@ struct Geocaches: View {
                             .disabled(true)
                         }
                     }
-                } else {
-                    // Show a disabled button if the distance is unknown
+                }
+                ForEach(Completed, id: \.name){ cache in
                     VStack(alignment: .leading) {
                         Button(action: {}) {
                             VStack(alignment: .leading) {
@@ -118,7 +137,7 @@ struct Geocaches: View {
                                     .font(.footnote)
                                     .foregroundColor(.secondary)
                                     .padding(.bottom, 2)
-                                Text("Distance unknown")
+                                Text("Claimed")
                                     .font(.subheadline)
                                     .foregroundColor(.gray)
                             }
@@ -127,9 +146,12 @@ struct Geocaches: View {
                     }
                 }
             }
+            
         }
+            
         .onAppear {
             locationManager.requestLocation()
+            availableOnly()
         }
         .onReceive(locationManager.$location) { location in
             userLocation = location
