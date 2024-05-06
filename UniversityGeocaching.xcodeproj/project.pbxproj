@@ -93,6 +93,8 @@
 		A669C2AC2BDCAA28003C90D2 /* IntegratedUserCacheDatabase.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = IntegratedUserCacheDatabase.csv; sourceTree = "<group>"; };
 		A669C2AE2BDCB13D003C90D2 /* UserDatabaseReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDatabaseReader.swift; sourceTree = "<group>"; };
 		A669C2B02BDCC798003C90D2 /* UserDatabase.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserDatabase.csv; sourceTree = "<group>"; };
+		A669C2B22BE84824003C90D2 /* UniversityGeocachingDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UniversityGeocachingDebug.entitlements; sourceTree = "<group>"; };
+		A669C2B32BE8498E003C90D2 /* UniversityGeocaching.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UniversityGeocaching.entitlements; sourceTree = "<group>"; };
 		A6F6F5782BD86AE800B1AA23 /* CreateCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCache.swift; sourceTree = "<group>"; };
 		A6F6F57C2BDA13CB00B1AA23 /* SelectOnMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectOnMap.swift; sourceTree = "<group>"; };
 		F32AD42D2BCA1CB00025433E /* UserStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatsView.swift; sourceTree = "<group>"; };
@@ -150,6 +152,8 @@
 		967FF45C29930CBE005EB8BC /* UniversityGeocaching */ = {
 			isa = PBXGroup;
 			children = (
+				A669C2B32BE8498E003C90D2 /* UniversityGeocaching.entitlements */,
+				A669C2B22BE84824003C90D2 /* UniversityGeocachingDebug.entitlements */,
 				A669C2A82BDC9E27003C90D2 /* Demo Server */,
 				5EE82CD029E6169000CA15CE /* Info.plist */,
 				659750F629C4EF0200CF7990 /* .gitignore */,
@@ -553,6 +557,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = UniversityGeocaching/UniversityGeocachingDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"UniversityGeocaching/Preview Content\"";
@@ -588,6 +593,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = UniversityGeocaching/UniversityGeocaching.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"UniversityGeocaching/Preview Content\"";

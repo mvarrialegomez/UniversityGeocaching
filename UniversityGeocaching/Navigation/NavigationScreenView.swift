@@ -10,7 +10,7 @@ import Foundation
 import MapKit
 import SwiftUI
 import CoreLocation
-import SystemConfiguration.CaptiveNetwork
+import NetworkExtension
 
 struct Cache: Identifiable {
     var id = UUID()
@@ -32,7 +32,7 @@ struct NavigationScreenView: View {
         center: CLLocationCoordinate2D(latitude: 32.772364, longitude: -117.187653),
         span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
     )
-    
+    @State var coun = 0
     @State var showingUserLocation = true
     
     // Replace caches list with @State variable
@@ -69,12 +69,7 @@ struct NavigationScreenView: View {
                             // Button to show user's current location
                             Button(action: {
                                 locationManager.requestLocation()
-                                if let bssid = getBSSID() {
-                                    print("BSSID: \(bssid)")
-                                }
-                                else{
-                                    print("Not Connected to a WI-FI Network")
-                                }
+                            
                             }) {
                                 Image(systemName: "location.circle.fill")
                                     .foregroundColor(.blue)
@@ -98,6 +93,9 @@ struct NavigationScreenView: View {
                             span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
                         )
                         print(location.coordinate)
+                        print(location.altitude)
+                        print("--\(coun)--")
+                        coun+=1
                     }
                 }
                 .tabItem {
@@ -115,21 +113,6 @@ struct NavigationScreenView: View {
                 Alert(title: Text("You're Too Far!").foregroundColor(.red), message: Text("Get within 100m of the cache."), dismissButton: .default(Text("OK")))
                         }
         }
-    }
-    
-    func getBSSID() -> String? {
-        guard let interfaces = CNCopySupportedInterfaces() as? [String] else {
-            return nil
-        }
-        for interface in interfaces {
-            guard let info = CNCopyCurrentNetworkInfo(interface as CFString) as NSDictionary? else{
-                continue
-            }
-            if let bssid = info[kCNNetworkInfoKeyBSSID as String] as? String{
-                return bssid
-            }
-        }
-        return nil
     }
     
     
@@ -150,6 +133,17 @@ struct NavigationScreenView: View {
         
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
             location = locations.last
+            /* Need Apple developer access
+            NEHotspotNetwork.fetchCurrent { network in
+                if let network = network {
+                    print("BSSID: \(network.bssid)")
+                }
+                else{
+                    print("Failed")
+                }
+                
+            }
+            */
         }
         
         func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
